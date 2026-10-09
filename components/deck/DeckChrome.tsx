@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight, LayoutGrid, Maximize2, MessageSquareText, Keyboard } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { asset } from '@/lib/asset';
 
 interface Props {
   index: number;
@@ -68,7 +69,7 @@ export function DeckChrome({
       <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-center justify-between px-[clamp(1rem,3vw,2.5rem)] pt-5">
         <div className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/pass98-logo.png" alt="" className="h-7 w-auto" />
+          <img src={asset('/pass98-logo.png')} alt="" className="h-7 w-auto" />
           <span className="text-[0.95rem] font-semibold tracking-tight">Pass98</span>
         </div>
         <div className="flex items-center gap-4">

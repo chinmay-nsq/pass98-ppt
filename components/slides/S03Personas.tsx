@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { Building2, GraduationCap, ShieldCheck, Users, type LucideIcon } from 'lucide-react';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { gsap, useGSAP, reducedMotion } from '@/lib/gsap';
+import { asset } from '@/lib/asset';
 
 interface Persona {
   name: string;
@@ -89,7 +90,7 @@ export default function Personas() {
           {/* Core */}
           <div className="absolute left-1/2 top-1/2 grid size-[26%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full glass-hot">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/pass98-logo.png" alt="Pass98" className="h-1/2 w-auto" />
+            <img src={asset('/pass98-logo.png')} alt="Pass98" className="h-1/2 w-auto" />
           </div>
 
           {/* Nodes: positioned on a circle with percent maths so the whole thing scales. */}

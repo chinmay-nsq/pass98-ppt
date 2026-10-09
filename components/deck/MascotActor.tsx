@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import type { Pose } from '@/lib/pose';
+import { asset } from '@/lib/asset';
 // The scene below is framed so the soles land at FEET_FRACTION of the canvas height (see lib/pose.ts).
 
 /**
@@ -16,8 +17,8 @@ import type { Pose } from '@/lib/pose';
  * where it wants them. With the camera below, the feet land at 82.4% of the canvas height.
  */
 
-const MODEL_URL = '/model.glb';
-const LIGHTING_URL = '/studio-lighting.hdr';
+const MODEL_URL = asset('/model.glb');
+const LIGHTING_URL = asset('/studio-lighting.hdr');
 const HEIGHT = 2.5;
 
 useGLTF.preload(MODEL_URL);

@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import * as THREE from 'three';
 import type { MascotConfig, MascotMood } from '@/components/slides/types';
 import { cn } from '@/lib/cn';
+import { asset } from '@/lib/asset';
 
 /**
  * The Pass98 mascot: the same 3D character that stands on the product's dashboard
@@ -14,8 +15,8 @@ import { cn } from '@/lib/cn';
  * The model ships no animation clips, so mood is expressed with rotation, scale and small hops.
  */
 
-const MODEL_URL = '/model.glb';
-const LIGHTING_URL = '/studio-lighting.hdr';
+const MODEL_URL = asset('/model.glb');
+const LIGHTING_URL = asset('/studio-lighting.hdr');
 const HEIGHT = 2.5; // world units the model is normalised to
 
 useGLTF.preload(MODEL_URL);

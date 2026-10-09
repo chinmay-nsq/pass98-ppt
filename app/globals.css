@@ -1,0 +1,166 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource-variable/geist-mono';
+
+/* Palette lifted from the product's dark theme (LevelUp-FrontEnd/src/styles/global.css):
+   near-black warm surface, orange primary #FE6600, deep orange #FB4D02. */
+@theme inline {
+  --font-sans: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+
+  --color-bg: #060202;
+  --color-surface: #0d0807;
+  --color-ink: #f6f1ed;
+  --color-dim: rgb(246 241 237 / 0.62);
+  --color-faint: rgb(246 241 237 / 0.38);
+  --color-line: rgb(255 255 255 / 0.09);
+
+  --color-brand: #fe6600;
+  --color-brand-deep: #fb4d02;
+  --color-brand-soft: #ff9a52;
+  --color-amber: #ffb020;
+  --color-sky: #5cb2ff;
+  --color-mint: #34d399;
+  --color-rose: #ff5a6e;
+
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-float: float 7s ease-in-out infinite;
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.06); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: rgb(254 102 0 / 0.45);
+  color: #fff;
+}
+
+@layer components {
+  /* ── Surfaces ─────────────────────────────────────────────────────────────── */
+  .glass {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.065), rgb(255 255 255 / 0.025));
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 24px 60px -30px rgb(0 0 0 / 0.8);
+  }
+
+  .glass-hot {
+    background: linear-gradient(160deg, rgb(254 102 0 / 0.18), rgb(251 77 2 / 0.04) 55%, rgb(255 255 255 / 0.02));
+    border: 1px solid rgb(254 102 0 / 0.38);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 0 60px -18px rgb(254 102 0 / 0.55), 0 1px 0 rgb(255 255 255 / 0.08) inset;
+  }
+
+  /* ── Type helpers ─────────────────────────────────────────────────────────── */
+  .text-gradient {
+    background: linear-gradient(95deg, #ffb27a 0%, #fe6600 42%, #fb4d02 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Applied by SlideFrame to each split word that lives inside a .text-gradient span. */
+  .tg-word {
+    background: linear-gradient(95deg, #ffb27a 0%, #fe6600 55%, #fb4d02 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* The split-line mask clips at the word's box; tight tracking pushes the last glyph past it. */
+    padding: 0 0.035em 0.08em 0;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-brand-soft);
+  }
+
+  .title-xl {
+    font-size: clamp(2.2rem, 5.4vw, 5.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 700;
+  }
+
+  .title-lg {
+    font-size: clamp(1.9rem, 3.9vw, 3.7rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+
+  .lede {
+    font-size: clamp(1rem, 1.35vw, 1.28rem);
+    line-height: 1.55;
+    color: var(--color-dim);
+    max-width: 44ch;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ── Film grain and vignette (cheap, sits over everything) ────────────────── */
+.grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+}
+
+.vignette {
+  background: radial-gradient(ellipse at center, transparent 45%, rgb(0 0 0 / 0.55) 100%);
+}
+
+/* ── Scrollbars (rarely visible; some slides can overflow on tiny screens) ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+}
+
+/* Elements animated by GSAP start hidden so there is no flash before the timeline runs. */
+[data-in],
+[data-split] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-in],
+  [data-split] {
+    opacity: 1;
+  }
+  .animate-float,
+  .animate-pulse-soft {
+    animation: none;
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "pass98-deck",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pass98 product presentation: a Next.js slide deck with GSAP, Framer Motion and react-three-fiber.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "@fontsource-variable/geist-mono": "^5.2.7",
+    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.39.0",
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.8.0",
+    "next": "^16.4.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^24.12.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.184.1",
+    "tailwindcss": "^4.2.2",
+    "typescript": "~5.9.3"
+  }
+}

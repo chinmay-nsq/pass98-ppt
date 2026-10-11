@@ -45,7 +45,7 @@ export const SLIDES: SlideDef[] = [
     title: 'Four personas',
     section: 'Product',
     notes:
-      'One login, four workspaces: the candidate, the institute (a college), the department admin inside it, and the super admin who runs the platform. Each has its own layout and permissions, but all of them sit on the same interview engine.',
+      'One login, three workspaces: the candidate, the institute (a college, which can also add its own departments inside), and the super admin who runs the platform. All of them sit on the same interview engine.',
     Component: Personas,
   },
   {

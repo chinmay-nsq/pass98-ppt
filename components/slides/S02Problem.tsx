@@ -50,7 +50,7 @@ export default function Problem() {
       eyebrow="The problem"
       title={
         <>
-          Interview prep is <span className="text-gradient">lonely</span>, vague and invisible.
+          Interview prep is <span className="text-gradient">lonely</span>, and feedback comes too late.
         </>
       }
     >

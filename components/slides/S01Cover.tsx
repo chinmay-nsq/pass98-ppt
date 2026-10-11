@@ -365,8 +365,7 @@ export default function Cover({ step, next }: SlideProps) {
         data-delay="1.1"
         className="lede mx-auto mt-8 max-w-[34ch] text-center text-[clamp(1.1rem,2vw,1.7rem)] text-ink/85"
       >
-        Your toughest interviewer. Zero awkward silence. Practice live, get
-        roasted, get hired.
+        Practice with AI. Get your score. Get hired.
       </p>
 
       <div
@@ -375,7 +374,7 @@ export default function Cover({ step, next }: SlideProps) {
         className="mt-9 flex flex-wrap items-center justify-center gap-2.5"
       >
         <Chip tone="brand">{TOTAL_FEATURES} features</Chip>
-        <Chip>4 personas</Chip>
+        <Chip>3 personas</Chip>
         <Chip>Web · iOS · Android</Chip>
       </div>
 

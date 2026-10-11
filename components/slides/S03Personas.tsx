@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { Building2, GraduationCap, ShieldCheck, Users, type LucideIcon } from 'lucide-react';
+import { Building2, GraduationCap, ShieldCheck, type LucideIcon } from 'lucide-react';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { gsap, useGSAP, reducedMotion } from '@/lib/gsap';
 import { asset } from '@/lib/asset';
@@ -17,9 +17,8 @@ interface Persona {
 
 const PERSONAS: Persona[] = [
   { name: 'Candidate', role: 'STUDENT', line: 'Practise, get scored, level up', icon: GraduationCap, angle: 0 },
-  { name: 'Institute', role: 'INSTITUTE', line: 'Roster, assessments, reports', icon: Building2, angle: 90 },
-  { name: 'Department admin', role: 'INSTITUTE_STAFF', line: 'Own department, same tools', icon: Users, angle: 180 },
-  { name: 'Super admin', role: 'SUPER_ADMIN', line: 'Plans, coupons, support, audit', icon: ShieldCheck, angle: 270 },
+  { name: 'Institute', role: 'INSTITUTE', line: 'Adds students and departments, gives tests, sees reports', icon: Building2, angle: 120 },
+  { name: 'Super admin', role: 'SUPER_ADMIN', line: 'Plans, coupons, support, audit', icon: ShieldCheck, angle: 240 },
 ];
 
 export default function Personas() {
@@ -45,10 +44,10 @@ export default function Personas() {
       eyebrow="One platform"
       title={
         <>
-          Four people, <span className="text-gradient">one login</span>.
+          Three people, <span className="text-gradient">one login</span>.
         </>
       }
-      subtitle="Each role lands in its own workspace, with its own layout and permissions, on the same engine."
+      subtitle="Each one lands in their own workspace, on the same engine. An institute can set up its own departments inside."
     >
       <div className="grid h-full items-center gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <ul data-in="left" className="hidden gap-4 lg:grid">

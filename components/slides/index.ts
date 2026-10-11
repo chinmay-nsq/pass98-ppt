@@ -2,7 +2,6 @@ import type { SlideDef } from './types';
 import Cover from './S01Cover';
 import Problem from './S02Problem';
 import Personas from './S03Personas';
-import ProductMap from './S04Map';
 import Voice from './S05Voice';
 import Preflight from './S06Preflight';
 import Report from './S07Report';
@@ -11,14 +10,10 @@ import Resume from './S09Resume';
 import Tools from './S10Tools';
 import Challenges from './S11Challenges';
 import English from './S12English';
-import Plans from './S13Plans';
 import Referral from './S14Referral';
 import Institute from './S15Institute';
-import Operate from './S16Operate';
 import Architecture from './S17Architecture';
 import Choices from './S18Choices';
-import Numbers from './S19Numbers';
-import Roadmap from './S20Roadmap';
 import Close from './S21Close';
 
 /**
@@ -33,7 +28,7 @@ export const SLIDES: SlideDef[] = [
     title: 'Pass98',
     section: 'Opening',
     notes:
-      'The cover rests on the original word, Passionate. Click the word (or press right) when you are ready: ionate fights and vibrates for a few seconds, then 98 smashes in and it becomes Pass98. Pause on that before you land the three ideas: practice live, get scored, level up. Pass98 is an AI interview-preparation platform, one codebase serving four kinds of user, on web, iOS and Android.',
+      'Say "Being passionate gets you the interview..." and click the word on "interview". Say "...Pass98 is what gets you hired" as 98 smashes in. Then: a gym for interviews, practise out loud with an AI, get an honest score, so the big day is your rematch.',
     Component: Cover,
   },
   {
@@ -54,25 +49,16 @@ export const SLIDES: SlideDef[] = [
     Component: Personas,
   },
   {
-    id: 'map',
-    title: 'Product map',
-    section: 'Product',
-    notes:
-      '153 features in 14 domains, each one checked against the code rather than the older docs. 147 are live and 6 are designed but not built. The biggest domains are the institute workspace, Practice English and the report analytics.',
-    Component: ProductMap,
-  },
-  {
     id: 'voice',
-    title: 'Meet Anna',
+    title: 'Anna and Leo',
     section: 'Candidate experience',
     steps: 4,
     notes:
-      'This is the hero feature. Anna is a real-time voice interviewer. Press right to walk the pipeline: voice-activity detection hears you stop, Deepgram transcribes, GPT-4o mini decides the next question, Cartesia speaks it. Key rules: one short question per turn, at most two follow-ups, and she never coaches, so the score is honest. The conversation is saved after every turn, so a dropped call resumes where it left off.',
+      'Meet Anna and Leo, your interview buddies. Anna interviews you, Leo coaches you after (more on him soon). Then Anna: she waits until you finish, listens to your whole justification... sorry, answer, will not scold you (she saves that for the report), 5 to 60 minutes, asks follow-ups. Four clicks walk the voice pipeline.',
     Component: Voice,
   },
   {
     id: 'preflight',
-    stage: { mascot: { side: 'right', mood: 'think', say: 'Mic check first. I will wait.' } },
     title: 'Before the call',
     section: 'Candidate experience',
     steps: 4,
@@ -94,7 +80,7 @@ export const SLIDES: SlideDef[] = [
     title: 'Leo, the mentor',
     section: 'Candidate experience',
     notes:
-      'Leo opens from any page or from a single report. He sees the candidate’s skills, experience and latest report in every message, and long conversations are summarised into lasting memory. Replies stream in as they are written. The conversation shown is scripted for the deck.',
+      'Remember Leo? He is your coach after the interview. He reads your reports. He remembers everything about you (quietly: so be careful what you tell him).',
     Component: Leo,
   },
   {
@@ -110,7 +96,7 @@ export const SLIDES: SlideDef[] = [
     title: 'Career tools',
     section: 'Candidate experience',
     notes:
-      'Cover letters and recruiter outreach, generated from a resume and a role, or from a role alone. Every rewrite adds a version, so nothing is lost and the user can step back. The editor is paper-like: what you see is what you copy. The sample message cycles by itself.',
+      'You can write your cover letters here too, so the email you send impresses them. Every rewrite is saved as a version.',
     Component: Tools,
   },
   {
@@ -131,14 +117,6 @@ export const SLIDES: SlideDef[] = [
     Component: English,
   },
   {
-    id: 'plans',
-    title: 'Plans',
-    section: 'Business',
-    notes:
-      'Every student starts on a seven-day trial with no card. Usage is metered per feature across four limits. The numbers shown are the launch defaults; the real values are edited live in the admin console without a deploy. Checkout is Razorpay with the price always read on the server, and coupons can go up to 90%, or 99% when private.',
-    Component: Plans,
-  },
-  {
     id: 'referral',
     title: 'Referral loop',
     section: 'Business',
@@ -155,21 +133,12 @@ export const SLIDES: SlideDef[] = [
     Component: Institute,
   },
   {
-    id: 'operate',
-    title: 'Operate and support',
-    section: 'B2B',
-    notes:
-      'The operator side. An admin console with analytics, live pricing and coupons. Impersonation lets support see exactly what a customer sees, read-only, with a banner and a log of every request. The Help Center gives users a ticket number, lets them paste a screenshot, and can request a call-back.',
-    Component: Operate,
-  },
-  {
     id: 'architecture',
-    stage: { mascot: { side: 'right', mood: 'idle', say: 'Peel the layers.' } },
     title: 'Architecture',
     section: 'Engineering',
     steps: 2,
     notes:
-      'Four layers. Press right to reveal them. The web and mobile apps talk to one Express API; the API calls the AI and commerce services; data lives in Postgres with Redis and S3. The voice agent is a separate Python service on LiveKit Cloud and shares the database.',
+      'Follow one answer through the system. Top: the web and mobile apps; your answer goes to one API that checks who you are and what your plan allows. Click: the API hands the hard work to specialists (OpenAI thinks, Deepgram hears, Cartesia speaks, LiveKit carries the call, Razorpay takes payments). Click: everything lands in one database with files in S3, and the report travels back up the same way.',
     Component: Architecture,
   },
   {
@@ -181,29 +150,11 @@ export const SLIDES: SlideDef[] = [
     Component: Choices,
   },
   {
-    id: 'numbers',
-    stage: { core: [7.0, 2.6] },
-    title: 'By the numbers',
-    section: 'Engineering',
-    notes:
-      'These were counted from the repositories on 9 October 2026: 153 catalogued features, 14 domains, 51 database models, 26 API route files, 51 test files, nine coding languages, six resume templates and eleven badges.',
-    Component: Numbers,
-  },
-  {
-    id: 'roadmap',
-    stage: { mascot: { side: 'left', mood: 'think', say: 'Which first?' } },
-    title: 'Roadmap',
-    section: 'Next',
-    notes:
-      'Six items already have written plans. The weakness practice loop is the highest-leverage: it turns a report into a dated plan that brings people back. Learning Roadmaps were built and then removed in October, so they are intentionally absent.',
-    Component: Roadmap,
-  },
-  {
     id: 'close',
-    stage: { mascot: { side: 'right', mood: 'cheer', size: 'lg', say: 'Thank you! Questions?' } },
     title: 'Level up',
     section: 'Close',
-    notes: 'Close on the promise: practise live, know where you stand, walk in ready. Then open for questions.',
+    notes:
+      'Read with attitude: "The interview won’t go easy on you." Pause. "Neither will Anna." Then: "Pass98. Now go get hired." Then: thank you, any questions?',
     Component: Close,
   },
 ];

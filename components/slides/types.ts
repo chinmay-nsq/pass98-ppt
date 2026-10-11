@@ -7,17 +7,6 @@ export interface SlideProps {
   next?: () => void;
 }
 
-export type MascotMood = 'idle' | 'cheer' | 'think';
-
-export interface MascotConfig {
-  /** Which edge of the screen the character stands on. */
-  side: 'left' | 'right';
-  mood?: MascotMood;
-  /** A short line shown in a speech bubble above the character. */
-  say?: string;
-  size?: 'md' | 'lg';
-}
-
 /** What lives behind and beside a slide, besides the slide itself. */
 export interface Stage {
   /**
@@ -25,8 +14,6 @@ export interface Stage {
    * sparingly (three slides) so it stays a surprise instead of wallpaper.
    */
   core?: [number, number];
-  /** The Pass98 mascot, the same 3D character as the product dashboard. */
-  mascot?: MascotConfig;
 }
 
 export interface SlideDef {

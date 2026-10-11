@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Copy, Mail, ScrollText, Target } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy, ScrollText, Target } from 'lucide-react';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { Glass } from '@/components/ui/Glass';
 import { cn } from '@/lib/cn';
@@ -9,25 +9,24 @@ import { cn } from '@/lib/cn';
 const VERSIONS = [
   {
     label: 'Original',
-    text: 'Hi Priya, I saw the Frontend role at Acme and I would love to talk. I have built React dashboards for two years and shipped a design system used by twelve teams. Could we find fifteen minutes this week?',
+    text: 'Dear Hiring Team, I am applying for the Frontend Developer role at Acme. For two years I have built React dashboards, and I created a design system that twelve teams now use. I would love to bring that same care to your product.',
   },
   {
     label: 'Shorter',
-    text: 'Hi Priya, I am a React developer who built a design system used across twelve teams. Open to a fifteen-minute chat about the Frontend role at Acme?',
+    text: 'Dear Hiring Team, I am a React developer applying for the Frontend role at Acme. I built a design system used by twelve teams, and I am ready to do the same for you.',
   },
   {
     label: 'Warmer tone',
-    text: 'Hi Priya! Your Frontend role at Acme caught my eye. I have spent two years building React dashboards and a shared design system, and I would really enjoy hearing about your team. Do you have fifteen minutes this week?',
+    text: 'Dear Hiring Team, the Frontend role at Acme instantly caught my eye. I have spent two happy years building React dashboards and a shared design system, and I would really enjoy helping your team ship great work.',
   },
   {
     label: 'Stronger hook',
-    text: 'Hi Priya, a design system that twelve teams actually use is hard to build. I built one, and I would like to bring that to Acme’s Frontend team. Fifteen minutes this week?',
+    text: 'Dear Hiring Team, a design system that twelve teams actually use is hard to build. I built one. Now I would like to bring that experience to Acme as your next Frontend Developer.',
   },
 ];
 
 const TOOLS = [
   { icon: ScrollText, name: 'Cover letter', body: 'A tailored letter from your resume and the role' },
-  { icon: Mail, name: 'Outreach', body: 'LinkedIn and email messages for recruiters' },
   { icon: Target, name: 'JD match', body: 'Matched and missing keywords, with a match rate' },
 ];
 
@@ -73,8 +72,7 @@ export default function Tools() {
         <Glass data-in="right" className="overflow-hidden">
           <div className="flex items-center justify-between border-b border-white/10 px-5 py-3">
             <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] p-0.5 text-xs">
-              <span className="rounded-full bg-brand px-3 py-1 font-semibold text-white">LinkedIn</span>
-              <span className="px-3 py-1 text-dim">Email</span>
+              <span className="rounded-full bg-brand px-3 py-1 font-semibold text-white">Cover letter</span>
             </div>
             <span className="mono flex items-center gap-1.5 text-[0.7rem] text-dim">
               <Copy className="size-3.5" /> Copy

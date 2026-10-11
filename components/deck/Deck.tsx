@@ -4,13 +4,13 @@ import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { SLIDES } from '@/components/slides';
+import { SlideIndexContext } from '@/components/ui/SlideFrame';
 import { DeckChrome } from './DeckChrome';
 import { Overview } from './Overview';
 import { NotesPanel, HelpPanel } from './Panels';
 
 // three.js stays out of the first paint; the deck is fully usable before the canvas arrives.
 const Backdrop = dynamic(() => import('./Backdrop'), { ssr: false });
-const MascotLayer = dynamic(() => import('./MascotLayer'), { ssr: false });
 
 const variants: Variants = {
   enter: (dir: number) => ({ opacity: 0, x: dir * 70, scale: 0.985, filter: 'blur(14px)' }),
@@ -197,14 +197,11 @@ export function Deck() {
             exit="exit"
             className="absolute inset-0 overflow-y-auto overflow-x-hidden"
           >
-            <Slide step={step} next={next} />
+            <SlideIndexContext.Provider value={index}>
+              <Slide step={step} next={next} />
+            </SlideIndexContext.Provider>
           </motion.main>
         )}
-      </AnimatePresence>
-
-      {/* The mascot stands above the slide but below the controls, and leaves with its slide. */}
-      <AnimatePresence>
-        {ready && !calm && slide.stage?.mascot && <MascotLayer key={slide.id} config={slide.stage.mascot} />}
       </AnimatePresence>
 
       <div className="grain pointer-events-none absolute inset-0" />

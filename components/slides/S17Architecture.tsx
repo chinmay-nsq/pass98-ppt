@@ -48,9 +48,10 @@ export default function Architecture({ step }: SlideProps) {
   return (
     <SlideFrame
       eyebrow="Under the hood"
+      subtitle="Your voice goes in at the top. A scored report comes out the bottom. Here is everything it passes through."
       title={
         <>
-          Four layers, <span className="text-gradient">one</span> codebase.
+          What happens when you hit <span className="text-gradient">Start</span>.
         </>
       }
     >
@@ -61,14 +62,14 @@ export default function Architecture({ step }: SlideProps) {
               initial={false}
               animate={visible[i] ? { opacity: 1, y: 0 } : { opacity: 0.08, y: 14 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="glass grid items-center gap-3 rounded-2xl px-5 py-4 md:grid-cols-[11rem_1fr]"
+              className="glass grid items-center gap-3 rounded-2xl px-5 py-2.5 md:grid-cols-[11rem_1fr]"
             >
               <p className={cn('mono text-[0.72rem] font-semibold uppercase tracking-[0.22em]', l.tone)}>{l.label}</p>
               <div className="flex flex-wrap gap-2">
                 {l.items.map((it) => (
                   <span
                     key={it}
-                    className="rounded-lg border border-white/10 bg-white/[0.045] px-3 py-1.5 text-[0.82rem] font-medium tracking-tight"
+                    className="rounded-lg border border-white/10 bg-white/[0.045] px-3 py-1 text-[0.8rem] font-medium tracking-tight"
                   >
                     {it}
                   </span>
@@ -76,13 +77,13 @@ export default function Architecture({ step }: SlideProps) {
               </div>
             </motion.div>
             {i < LAYERS.length - 1 && (
-              <div className="relative mx-auto h-[clamp(1.25rem,3.4vh,2.25rem)] w-px bg-gradient-to-b from-brand/60 to-brand/10">
+              <div className="relative mx-auto h-[clamp(0.75rem,2.2vh,1.5rem)] w-px bg-gradient-to-b from-brand/60 to-brand/10">
                 <span data-flow className="absolute -left-[3px] top-0 size-[7px] rounded-full bg-brand shadow-[0_0_10px_#fe6600]" />
               </div>
             )}
           </div>
         ))}
-        <p className="mono mt-4 text-center text-[0.68rem] tracking-widest text-faint">
+        <p className="mono mt-3 text-center text-[0.68rem] tracking-widest text-faint">
           {step < 2 ? 'PRESS → TO REVEAL THE NEXT LAYER' : 'WEB ON VERCEL · API ON AWS · VOICE AGENT ON LIVEKIT CLOUD'}
         </p>
       </div>

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { gsap, useGSAP, reducedMotion } from '@/lib/gsap';
 
-const LINES = ['Practice live.', 'Know where you stand.', 'Walk in ready.'];
+const LINES = ['The interview won’t go easy on you.', 'Neither will Anna.', 'Pass98. Now go get hired.'];
 
 export default function Close() {
   const root = useRef<HTMLDivElement>(null);

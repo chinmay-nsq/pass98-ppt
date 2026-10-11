@@ -21,7 +21,7 @@ import type { SlideProps } from "./types";
 const OLD_NAME = "ionate";
 const NEW_NAME = "98";
 const SPARKS = 50;
-const FIGHT_SECONDS = 3.4;
+const FIGHT_SECONDS = 1.0;
 
 type Phase = "idle" | "playing" | "done";
 
@@ -35,7 +35,8 @@ export default function Cover({ step, next }: SlideProps) {
     () => {
       const el = root.current;
       if (!el) return;
-      const q = <T extends HTMLElement>(sel: string) => el.querySelector<T>(sel)!;
+      const q = <T extends HTMLElement>(sel: string) =>
+        el.querySelector<T>(sel)!;
       const h1 = q("[data-title]");
       const pass = q("[data-pass]");
       const slot = q("[data-slot]");
@@ -59,7 +60,12 @@ export default function Cover({ step, next }: SlideProps) {
       // background-clip text is lost on transformed children, so each letter carries the gradient.
       oldChars.forEach((c) => c.classList.add("tg-word"));
 
-      const OFFSCREEN = { x: window.innerWidth * 0.75, scale: 1.6, filter: "blur(16px)", skewX: -18 };
+      const OFFSCREEN = {
+        x: window.innerWidth * 0.75,
+        scale: 1.6,
+        filter: "blur(16px)",
+        skewX: -18,
+      };
       const ARRIVED = { x: 0, scale: 1, filter: "blur(0px)", skewX: 0 };
 
       let phase: Phase = startAtEnd ? "done" : "idle";
@@ -71,8 +77,21 @@ export default function Cover({ step, next }: SlideProps) {
         const s = sparks[sparkIndex++ % sparks.length];
         gsap.fromTo(
           s,
-          { x: rnd(-wOld / 2, wOld / 2), y: rnd(-60, 60), opacity: 1, scale: rnd(0.5, 1.2) },
-          { x: `+=${rnd(-70, 70)}`, y: `-=${rnd(40, 130)}`, opacity: 0, scale: 0, duration: rnd(0.35, 0.7), ease: "power2.out", overwrite: true },
+          {
+            x: rnd(-wOld / 2, wOld / 2),
+            y: rnd(-60, 60),
+            opacity: 1,
+            scale: rnd(0.5, 1.2),
+          },
+          {
+            x: `+=${rnd(-70, 70)}`,
+            y: `-=${rnd(40, 130)}`,
+            opacity: 0,
+            scale: 0,
+            duration: rnd(0.35, 0.7),
+            ease: "power2.out",
+            overwrite: true,
+          },
         );
       };
 
@@ -91,7 +110,14 @@ export default function Cover({ step, next }: SlideProps) {
         gsap.set(oldEl, { clearProps: "display,filter", opacity: 1 });
         // Reset only what the animation touches. Clearing everything would also strip the
         // inline-block display SplitText gives each letter, and the word would stack vertically.
-        gsap.set(oldChars, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, yPercent: 0 });
+        gsap.set(oldChars, {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          opacity: 1,
+          yPercent: 0,
+        });
         gsap.set(h1, { x: 0, y: 0, scale: 1 });
         gsap.set(newEl, { opacity: 1, ...OFFSCREEN });
         gsap.set([flash, ...sparks], { opacity: 0 });
@@ -126,7 +152,11 @@ export default function Cover({ step, next }: SlideProps) {
         });
 
         // 2. "98" charges in from the right, arriving just as the fight peaks.
-        tl.to(newEl, { ...ARRIVED, duration: 0.5, ease: "power4.in" }, ">-0.25");
+        tl.to(
+          newEl,
+          { ...ARRIVED, duration: 0.5, ease: "power4.in" },
+          ">-0.25",
+        );
         tl.add("hit");
 
         // 3. Impact: every letter of "ionate" is blown apart, the word shakes, flash and sparks.
@@ -159,21 +189,54 @@ export default function Cover({ step, next }: SlideProps) {
           },
           "hit",
         );
-        tl.fromTo(flash, { scale: 0.15, opacity: 0.95 }, { scale: 3, opacity: 0, duration: 1, ease: "power2.out", immediateRender: false }, "hit");
+        tl.fromTo(
+          flash,
+          { scale: 0.15, opacity: 0.95 },
+          {
+            scale: 3,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out",
+            immediateRender: false,
+          },
+          "hit",
+        );
         sparks.forEach((s, i) => {
           const a = (i / SPARKS) * Math.PI * 2 + rnd(-0.2, 0.2);
           const d = rnd(130, 420);
           tl.fromTo(
             s,
             { x: 0, y: 0, opacity: 1, scale: rnd(0.7, 1.7) },
-            { x: Math.cos(a) * d, y: Math.sin(a) * d * 0.7, opacity: 0, scale: 0, duration: rnd(0.6, 1.2), ease: "power3.out", immediateRender: false },
+            {
+              x: Math.cos(a) * d,
+              y: Math.sin(a) * d * 0.7,
+              opacity: 0,
+              scale: 0,
+              duration: rnd(0.6, 1.2),
+              ease: "power3.out",
+              immediateRender: false,
+            },
             "hit",
           );
         });
 
         // 4. The word closes up around "98" and gives one proud pop.
-        tl.to(slot, { width: wNew, duration: 0.75, ease: "back.out(1.7)" }, "hit+=0.2");
-        tl.to(h1, { scale: 1.045, duration: 0.2, ease: "power2.out", yoyo: true, repeat: 1 }, "hit+=0.55");
+        tl.to(
+          slot,
+          { width: wNew, duration: 0.75, ease: "back.out(1.7)" },
+          "hit+=0.2",
+        );
+        tl.to(
+          h1,
+          {
+            scale: 1.045,
+            duration: 0.2,
+            ease: "power2.out",
+            yoyo: true,
+            repeat: 1,
+          },
+          "hit+=0.55",
+        );
       };
 
       // Stepping back from the revealed cover replays the story from "Passionate".
@@ -181,7 +244,15 @@ export default function Cover({ step, next }: SlideProps) {
         if (phase === "idle") return;
         timeline?.kill();
         timeline = null;
-        gsap.killTweensOf([h1, ...oldChars, ...sparks, flash, newEl, slot, oldEl]);
+        gsap.killTweensOf([
+          h1,
+          ...oldChars,
+          ...sparks,
+          flash,
+          newEl,
+          slot,
+          oldEl,
+        ]);
         showRest();
         phase = "idle";
       };
@@ -223,7 +294,10 @@ export default function Cover({ step, next }: SlideProps) {
   const revealed = step >= 1;
 
   return (
-    <SlideFrame center bodyClassName="flex flex-col items-center justify-center">
+    <SlideFrame
+      center
+      bodyClassName="flex flex-col items-center justify-center"
+    >
       <p data-in="fade" className="eyebrow mb-6">
         Product deck · October 2026
       </p>
@@ -241,17 +315,26 @@ export default function Cover({ step, next }: SlideProps) {
           title={revealed ? undefined : "Click to reveal the name"}
           className={cn(
             "title-xl relative whitespace-nowrap text-[clamp(3.2rem,15vw,14rem)] leading-[0.86] tracking-[-0.055em] select-none",
-            !revealed && "cursor-pointer transition-[filter] duration-300 hover:[filter:drop-shadow(0_0_34px_rgb(254_102_0/0.4))]",
+            !revealed &&
+              "cursor-pointer transition-[filter] duration-300 hover:[filter:drop-shadow(0_0_34px_rgb(254_102_0/0.4))]",
           )}
         >
           <span data-pass aria-hidden className="inline-block opacity-0">
             Pass
           </span>
           <span data-slot aria-hidden className="inline-grid align-baseline">
-            <span data-old className="inline-block justify-self-start text-transparent opacity-0" style={{ gridArea: "1 / 1" }}>
+            <span
+              data-old
+              className="inline-block justify-self-start text-transparent opacity-0"
+              style={{ gridArea: "1 / 1" }}
+            >
               {OLD_NAME}
             </span>
-            <span data-new className="text-gradient inline-block justify-self-start pr-[0.09em] opacity-0" style={{ gridArea: "1 / 1" }}>
+            <span
+              data-new
+              className="text-gradient inline-block justify-self-start pr-[0.09em] opacity-0"
+              style={{ gridArea: "1 / 1" }}
+            >
               {NEW_NAME}
             </span>
           </span>
@@ -262,7 +345,10 @@ export default function Cover({ step, next }: SlideProps) {
           data-flash
           aria-hidden
           className="pointer-events-none absolute size-[26rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0"
-          style={{ background: "radial-gradient(circle, rgba(255,190,120,0.95), rgba(254,102,0,0.35) 38%, transparent 68%)" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,190,120,0.95), rgba(254,102,0,0.35) 38%, transparent 68%)",
+          }}
         />
         {Array.from({ length: SPARKS }, (_, i) => (
           <span
@@ -274,17 +360,30 @@ export default function Cover({ step, next }: SlideProps) {
         ))}
       </div>
 
-      <p data-in data-delay="1.1" className="lede mx-auto mt-8 max-w-[34ch] text-center text-[clamp(1.1rem,2vw,1.7rem)] text-ink/85">
-        The AI interview gym. Practice live, get scored, level up.
+      <p
+        data-in
+        data-delay="1.1"
+        className="lede mx-auto mt-8 max-w-[34ch] text-center text-[clamp(1.1rem,2vw,1.7rem)] text-ink/85"
+      >
+        Your toughest interviewer. Zero awkward silence. Practice live, get
+        roasted, get hired.
       </p>
 
-      <div data-in data-delay="1.3" className="mt-9 flex flex-wrap items-center justify-center gap-2.5">
+      <div
+        data-in
+        data-delay="1.3"
+        className="mt-9 flex flex-wrap items-center justify-center gap-2.5"
+      >
         <Chip tone="brand">{TOTAL_FEATURES} features</Chip>
         <Chip>4 personas</Chip>
         <Chip>Web · iOS · Android</Chip>
       </div>
 
-      <p data-in="fade" data-delay="1.8" className="mono mt-12 flex animate-pulse-soft items-center gap-2.5 text-xs tracking-[0.3em] text-faint">
+      <p
+        data-in="fade"
+        data-delay="1.8"
+        className="mono mt-12 flex animate-pulse-soft items-center gap-2.5 text-xs tracking-[0.3em] text-faint"
+      >
         {revealed ? (
           "PRESS → TO BEGIN"
         ) : (

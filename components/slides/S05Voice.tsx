@@ -9,6 +9,7 @@ import { gsap, useGSAP, reducedMotion } from '@/lib/gsap';
 import type { SlideProps } from './types';
 
 const POINTS = [
+  'Anna interviews you. Leo coaches you after',
   'Live sessions of 15 to 60 minutes',
   'One short question per turn, two follow-ups at most',
   'Saved after every turn, so a dropped call resumes',
@@ -60,10 +61,10 @@ export default function Voice({ step }: SlideProps) {
 
   return (
     <SlideFrame
-      eyebrow="The core experience"
+      eyebrow="Your interview buddies"
       title={
         <>
-          Meet Anna, your <span className="text-gradient">voice interviewer</span>.
+          Meet <span className="text-gradient">Anna</span> and <span className="text-gradient">Leo</span>.
         </>
       }
     >

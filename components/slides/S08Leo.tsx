@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Bot, BrainCircuit, FileSearch, Radio } from 'lucide-react';
+import { Bot, BrainCircuit, FileSearch } from 'lucide-react';
 import { SlideFrame } from '@/components/ui/SlideFrame';
-import { Glass, Chip } from '@/components/ui/Glass';
+import { Glass } from '@/components/ui/Glass';
 
 const QUESTION = 'Why did I only score 64 on system design?';
 const ANSWER =
@@ -12,7 +12,6 @@ const ANSWER =
 const FACTS = [
   { icon: FileSearch, title: 'Reads your reports', body: 'Every answer is grounded in your real data.' },
   { icon: BrainCircuit, title: 'Remembers you', body: 'Long chats are summarised into lasting memory.' },
-  { icon: Radio, title: 'Streams live', body: 'Replies arrive token by token, like a person typing.' },
 ];
 
 type Phase = 'idle' | 'asking' | 'thinking' | 'answering' | 'done';
@@ -92,11 +91,6 @@ export default function Leo() {
               </div>
             </li>
           ))}
-          <li data-in="left" className="flex flex-wrap gap-2 pt-1">
-            <Chip>20 messages on trial</Chip>
-            <Chip>200 on PRO</Chip>
-            <Chip tone="brand">1,000 on MAX</Chip>
-          </li>
         </ul>
 
         <Glass hot data-in="right" className="overflow-hidden">

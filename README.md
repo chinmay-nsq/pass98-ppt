@@ -137,3 +137,35 @@ top of `components/slides/S01Cover.tsx`.
 A word-for-word script with click cues and a time budget for each slide (about 12 minutes) is published
 as a private Claude artifact: https://claude.ai/artifact/MmZm9fg7pcAurSP7JnRimd. The short notes
 behind the **N** key in the deck follow the same lines.
+
+## Cover versions
+
+The cover has a small **Cover: Classic | Push | Stomp | Kick** switch in the bottom-right corner (or
+press **C** on the cover to cycle). The choice is remembered on this device.
+
+- **Classic:** "ionate" shakes, then "98" smashes in from the right. No character.
+- The other three star the Orange Scout (the rigged model from `../orange-scout`, copied to
+  `public/scout.glb`). Each ends with him flexing and settling beside "98", hands on hips.
+  - **Push:** he walks in from the right and pushes "ionate" to the left until it pops into "98".
+  - **Stomp:** he drops from the top of the screen onto "ionate" and squashes it flat with a
+    shockwave ("Pass" hops). He hops off and the flattened letters spring back up as "98".
+  - **Kick:** he sprints in from the right and flying-kicks the "e". The letters are bowled off the
+    screen, then "9" and "8" fall from the sky and slam into place.
+
+With any Scout version on, he also makes cameos on four later slides (hidden in Classic):
+
+| Slide | What he does |
+| --- | --- |
+| 6, The report | Runs in, stands on top of the skill-bars card, jumps and flexes (flexes again every 7 s) |
+| 10, Challenges | Runs onto the mission card, throws a punch and a kick, then flexes (punches again every 6 s) |
+| 12, Referrals | Spins in the middle of the slide, then keeps dancing |
+| 16, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
+
+The routines are set per slide in `components/slides/index.ts` (`stage.scout`) and played by
+`components/deck/ScoutCameo.tsx`, which uses the model's own moves (wave, jump, kick, punch, flex, spin,
+dance, run) from `lib/scoutPose.ts`.
+
+The Scout versions use three.js directly (`components/deck/ScoutStage.tsx`) and the poses in
+`lib/scoutPose.ts`, ported from the model's own `orange-scout/web/index.html`. The model is 7.9 MB,
+so it only loads when the Scout version is on screen. It needs a GPU: on machines without one the
+browser draws it slowly, so test the laptop you will present from.

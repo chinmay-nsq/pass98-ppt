@@ -68,6 +68,7 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'report',
+    stage: { scout: { x: 0.86, y: 0.387, size: 0.24, steps: [{ run: { from: 1.08, to: 0.86, dur: 1.1 } }, { face: 0 }, { wait: 1.2 }, { act: 'jump' }, { act: 'flex' }, { loop: 'idle' }], repeat: { act: 'flex', every: 7 } } },
     title: 'The report',
     section: 'Candidate experience',
     steps: 1,
@@ -101,6 +102,7 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'challenges',
+    stage: { scout: { x: 0.858, y: 0.343, size: 0.23, steps: [{ run: { from: 1.08, to: 0.858, dur: 1.0 } }, { face: -0.55 }, { act: 'punch' }, { act: 'kick' }, { face: 0 }, { act: 'flex' }, { loop: 'idle' }], repeat: { act: 'punch', every: 6 } } },
     title: 'Coding missions',
     section: 'Candidate experience',
     notes:
@@ -118,6 +120,7 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'referral',
+    stage: { scout: { x: 0.53, y: 0.8, size: 0.34, steps: [{ act: 'spin' }, { loop: 'dance' }] } },
     title: 'Referral loop',
     section: 'Business',
     notes:
@@ -151,6 +154,7 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'close',
+    stage: { scout: { x: 0.86, y: 0.8, size: 0.36, steps: [{ run: { from: 1.1, to: 0.86, dur: 1.2 } }, { face: 0 }, { act: 'spin' }, { act: 'wave' }, { loop: 'idle' }], repeat: { act: 'wave', every: 5 } } },
     title: 'Level up',
     section: 'Close',
     notes:

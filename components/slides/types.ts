@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import type { CameoConfig } from '@/components/deck/ScoutCameo';
 
 export interface SlideProps {
   /** In-slide build step: 0 on arrival, up to `steps` as the presenter advances. */
@@ -14,6 +15,8 @@ export interface Stage {
    * sparingly (three slides) so it stays a surprise instead of wallpaper.
    */
   core?: [number, number];
+  /** An Orange Scout cameo, shown when the Scout version of the deck is on. */
+  scout?: CameoConfig;
 }
 
 export interface SlideDef {

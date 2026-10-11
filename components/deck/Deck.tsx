@@ -5,12 +5,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { SLIDES } from '@/components/slides';
 import { SlideIndexContext } from '@/components/ui/SlideFrame';
+import { useCoverVariant } from '@/lib/coverVariant';
 import { DeckChrome } from './DeckChrome';
 import { Overview } from './Overview';
 import { NotesPanel, HelpPanel } from './Panels';
 
 // three.js stays out of the first paint; the deck is fully usable before the canvas arrives.
 const Backdrop = dynamic(() => import('./Backdrop'), { ssr: false });
+const ScoutCameo = dynamic(() => import('./ScoutCameo'), { ssr: false });
 
 const variants: Variants = {
   enter: (dir: number) => ({ opacity: 0, x: dir * 70, scale: 0.985, filter: 'blur(14px)' }),
@@ -33,6 +35,7 @@ const variants: Variants = {
 const total = SLIDES.length;
 
 export function Deck() {
+  const variant = useCoverVariant();
   const [index, setIndex] = useState(0);
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(1);
@@ -202,6 +205,11 @@ export function Deck() {
             </SlideIndexContext.Provider>
           </motion.main>
         )}
+      </AnimatePresence>
+
+      {/* Orange Scout cameos, only in the Scout version of the deck. */}
+      <AnimatePresence>
+        {ready && !calm && variant !== 'classic' && slide.stage?.scout && <ScoutCameo key={slide.id} config={slide.stage.scout} />}
       </AnimatePresence>
 
       <div className="grain pointer-events-none absolute inset-0" />

@@ -36,7 +36,7 @@ Press **F** for fullscreen. The URL tracks the slide (`#7`), so you can link str
 | Click the cover word | Starts the name animation |
 
 Some slides have **builds**: pressing next first reveals the next step on the same slide (the voice
-pipeline, the five pre-call steps, the focus plan, the architecture
+pipeline, the five pre-call steps, the focus plan
 layers). Small dots at the bottom right show the build progress.
 
 ## The slides
@@ -51,7 +51,7 @@ layers). Small dots at the bottom right show the build progress.
 | 6 | The report | Readiness gauge, skill bars, focus plan (1 build) |
 | 7 | How colleges use Pass98 | Five simple steps, from uploading students to seeing who is ready |
 | 8 | Everything else | Leo, resume builder, ATS score, job match, cover letters, English, coding, dashboard |
-| 9 | Tech stack and architecture | One answer's trip through the four layers (2 builds) |
+| 9 | Tech stack and architecture | Six groups of tools, and a four-step strip of how an answer flows |
 | 10 | Level up | Close |
 
 Numbers on the report slide are **samples**, and the slide says so.

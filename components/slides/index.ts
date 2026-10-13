@@ -91,9 +91,8 @@ export const SLIDES: SlideDef[] = [
     id: 'architecture',
     title: 'Architecture',
     section: 'Engineering',
-    steps: 2,
     notes:
-      'The tech stack, layer by layer, following one answer. Top: React web app and the iOS and Android apps. Your answer goes to one Express API in TypeScript that checks who you are and what your plan allows. Click: the specialists, OpenAI thinks, Deepgram hears, Cartesia speaks, LiveKit carries the call, Judge0 runs code, Razorpay takes payments. Click: everything lands in PostgreSQL with Redis and files in S3, and the report travels back up the same way.',
+      'What we built it with. Web app in React and TypeScript, the same app on iOS and Android through Capacitor. The backend is Node and Express in TypeScript. The AI and voice: OpenAI thinks, Deepgram hears, Cartesia speaks, LiveKit carries the call. Data in PostgreSQL with Redis and files in S3. Bottom line: your answer goes from the app, to our API, to the AI, and the report is saved in the database.',
     Component: Architecture,
   },
   {

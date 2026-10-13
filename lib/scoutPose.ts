@@ -8,11 +8,12 @@
  *  - arms: arm.x negative = raise forward, armL.z positive / armR.z negative = raise sideways,
  *    elbow.x negative = bend the forearm forward;
  *  - torso and head: x positive = lean or nod forward, y = twist, z = side tilt.
- * `rootY` lifts the whole model; `rootRot` turns it about the vertical axis (-π/2 faces screen-left).
+ * `rootY` lifts the whole model; `rootRot` turns it about the vertical axis (-π/2 faces screen-left);
+ * `rootFlip` rolls it head-over-heels about his middle (positive = a front flip, head toward you).
  */
 
 export const KEYS = [
-  'rootY', 'rootRot', 'hipsX', 'hipsY', 'hipsZ', 'spineX', 'spineY', 'spineZ', 'chestX', 'chestY', 'chestZ', 'headX', 'headY', 'headZ',
+  'rootY', 'rootRot', 'rootFlip', 'hipsX', 'hipsY', 'hipsZ', 'spineX', 'spineY', 'spineZ', 'chestX', 'chestY', 'chestZ', 'headX', 'headY', 'headZ',
   'thLx', 'thLz', 'knLx', 'ftLx', 'thRx', 'thRz', 'knRx', 'ftRx',
   'aLx', 'aLy', 'aLz', 'eLx', 'eLy', 'eLz', 'hLx', 'aRx', 'aRy', 'aRz', 'eRx', 'eRy', 'eRz', 'hRx',
 ] as const;

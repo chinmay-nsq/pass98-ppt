@@ -24,7 +24,7 @@ export interface Spot {
  * One step of a cameo routine.
  *  - `run`: run in from screen x `from` (a fraction, e.g. 1.08 = off the right edge) to a spot.
  *  - `hop`: jump from where he is to a spot (or in place), `height` model units above the higher of
- *    the two, twirling `spin` full turns in the air.
+ *    the two, twirling `spin` full turns (about the vertical axis) or doing `flip` front flips.
  *  - `act`: play one of the model's moves once.
  *  - `loop`: hold a looping move (idle, dance, look) for `dur` seconds, or forever if omitted.
  *  - `face`: turn to face a direction (radians: 0 = audience, -π/2 = screen-left).
@@ -33,7 +33,7 @@ export interface Spot {
  */
 export type CameoStep =
   | { run: { from: number; to: Spot; dur: number } }
-  | { hop: { to?: Spot; dur: number; height?: number; spin?: number } }
+  | { hop: { to?: Spot; dur: number; height?: number; spin?: number; flip?: number } }
   | { act: ActionName }
   | { loop: LoopName; dur?: number }
   | { face: number }
@@ -103,6 +103,7 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
     let faceFrom = 0;
     let hopFrom = { x: 0, y: 0 };
     let spinRot = 0;
+    let flipRot = 0;
     // Where he is drawn this frame (px), when moving between spots.
     let moving: { x: number; y: number } | null = null;
     const cur: Pose = { ...pose };
@@ -158,15 +159,18 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
             y: hopFrom.y + (to.y - hopFrom.y) * p - Math.sin(Math.PI * p) * lift,
           };
           // Crouch, tuck in the air, then legs down for the landing.
-          target = p < 0.15 ? P(squat(0.8), { aLx: 0.6, aRx: 0.6 }) : p < 0.75 ? TUCK : P({ aLz: 1.2, aRz: -1.2 });
+          target = p < 0.15 ? P(squat(0.8), { aLx: 0.6, aRx: 0.6 }) : p < 0.75 ? { ...TUCK, rootRot: 0 } : P({ aLz: 1.2, aRz: -1.2 });
           // The twirl happens while airborne, eased so take-off and landing face the same way.
           const air = Math.min(1, Math.max(0, (p - 0.12) / 0.7));
-          spinRot = (s.hop.spin ?? 0) * Math.PI * 2 * (air * air * (3 - 2 * air));
+          const turn = air * air * (3 - 2 * air);
+          spinRot = (s.hop.spin ?? 0) * Math.PI * 2 * turn;
+          flipRot = (s.hop.flip ?? 0) * Math.PI * 2 * turn;
           fast = true;
           if (p >= 1) {
             spot = dest;
             moving = null;
             spinRot = 0;
+            flipRot = 0;
             next();
           }
         } else if ('act' in s) {
@@ -207,12 +211,13 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       // Ease toward the target, like the model's own page; spins (rootRot) follow exactly.
       const k = 1 - Math.exp(-dt * (fast ? 24 : 10));
       for (const n of KEYS) {
-        if (n === 'rootRot') continue;
+        if (n === 'rootRot' || n === 'rootFlip') continue;
         cur[n] += (target[n] - cur[n]) * k;
       }
       cur.rootRot = target.rootRot;
       for (const n of KEYS) pose[n] = cur[n];
       pose.rootRot = facing + cur.rootRot + spinRot;
+      pose.rootFlip = flipRot;
       place();
     };
     gsap.ticker.add(tick);

@@ -151,7 +151,7 @@ With any Scout version on, he also makes cameos on two later slides (hidden in C
 
 | Slide | What he does |
 | --- | --- |
-| 5, The report | Runs onto the skill bars, leaps with a spin onto the score, stomps it three times (64 → 70 → 76 → 82, each with a shockwave; sparks on the last), then spins off to a superhero landing at the bottom-left of the score card |
+| 5, The report | Runs onto the skill bars, turns to the audience and front-flips onto the score, stomps it three times (64 → 70 → 76 → 82, each with a shockwave; sparks on the last), then front-flips off to a superhero landing at the bottom-left of the score card |
 | 11, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
 
 A cameo stands on cards marked `data-cameo="<name>"` (a `Spot` with `anchor`), hops between them, and can signal the slide (`emit`), so he lands

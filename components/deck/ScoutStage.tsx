@@ -48,9 +48,14 @@ const loadModel = () => {
   return modelPromise;
 };
 
+// Flips pivot about his middle, so he rolls in place instead of swinging round his feet.
+const FLIP_PIVOT = 0.95;
+
 function applyPose(model: THREE.Object3D, b: Bones, c: Pose) {
-  model.position.y = c.rootY;
-  model.rotation.y = c.rootRot;
+  const f = c.rootFlip || 0;
+  model.position.y = c.rootY + FLIP_PIVOT - FLIP_PIVOT * Math.cos(f);
+  model.position.z = -FLIP_PIVOT * Math.sin(f);
+  model.rotation.set(f, c.rootRot, 0, 'YXZ');
   b.hips?.rotation.set(c.hipsX, c.hipsY, c.hipsZ);
   b.spine?.rotation.set(c.spineX, c.spineY, c.spineZ);
   b.chest?.rotation.set(c.chestX, c.chestY, c.chestZ);

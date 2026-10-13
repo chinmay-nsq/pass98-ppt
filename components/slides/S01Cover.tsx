@@ -7,7 +7,6 @@ import { MousePointerClick } from "lucide-react";
 import { SlideFrame } from "@/components/ui/SlideFrame";
 import { Chip } from "@/components/ui/Glass";
 import { cn } from "@/lib/cn";
-import { TOTAL_FEATURES } from "@/lib/data";
 import { gsap, SplitText, useGSAP, reducedMotion } from "@/lib/gsap";
 import type { SlideProps } from "./types";
 
@@ -375,7 +374,6 @@ function CoverClassic({ step, next }: SlideProps) {
         data-delay="1.3"
         className="mt-9 flex flex-wrap items-center justify-center gap-2.5"
       >
-        <Chip tone="brand">{TOTAL_FEATURES} features</Chip>
         <Chip>3 personas</Chip>
         <Chip>Web · iOS · Android</Chip>
       </div>

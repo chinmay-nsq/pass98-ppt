@@ -58,6 +58,7 @@ export const SLIDES: SlideDef[] = [
       scout: {
         spot: { anchor: 'report-bars', x: 0.5 },
         size: 0.22,
+        delay: 1.8,
         steps: [
           { run: { from: 1.08, to: { anchor: 'report-bars', x: 0.5 }, dur: 1.5 } },
           { face: 0 },
@@ -128,7 +129,7 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'close',
-    stage: { scout: { spot: { x: 0.86, y: 0.8 }, size: 0.36, steps: [{ run: { from: 1.1, to: { x: 0.86, y: 0.8 }, dur: 1.2 } }, { face: 0 }, { act: 'spin' }, { act: 'wave' }, { loop: 'idle' }], repeat: { act: 'wave', every: 5 } } },
+    stage: { scout: { spot: { x: 0.86, y: 0.8 }, size: 0.36, delay: 1.2, steps: [{ run: { from: 1.1, to: { x: 0.86, y: 0.8 }, dur: 1.2 } }, { face: 0 }, { wait: 0.3 }, { act: 'bow' }, { wait: 0.3 }, { act: 'highfive' }, { loop: 'idle' }] } },
     title: 'Level up',
     section: 'Close',
     notes:

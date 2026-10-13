@@ -45,6 +45,8 @@ export interface CameoConfig {
   spot: Spot;
   /** His height as a fraction of the screen height. */
   size: number;
+  /** Seconds to stay hidden after the slide arrives, so it settles before he enters. */
+  delay?: number;
   /** Starting direction (radians); defaults to facing the audience. */
   facing?: number;
   /** The routine; the last step should normally be a `loop` without a duration. */
@@ -127,10 +129,15 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       }
     };
     next();
-    place();
+    if (!config.delay) place();
 
+    let waitIn = config.delay ?? 0;
     const tick = () => {
       const dt = Math.min(0.05, gsap.ticker.deltaRatio() / 60);
+      if (waitIn > 0) {
+        waitIn -= dt;
+        return;
+      }
       T += dt;
       stepT += dt;
       const s = config.steps[stepIndex];

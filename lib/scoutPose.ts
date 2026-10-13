@@ -211,7 +211,7 @@ export interface Action {
   frames: [number, Pose][];
 }
 
-export type ActionName = 'wave' | 'jump' | 'kick' | 'punch' | 'flex' | 'spin' | 'slam';
+export type ActionName = 'wave' | 'jump' | 'kick' | 'punch' | 'flex' | 'spin' | 'slam' | 'bow' | 'highfive';
 
 export const ACTIONS: Record<ActionName, Action> = {
   wave: {
@@ -256,6 +256,31 @@ export const ACTIONS: Record<ActionName, Action> = {
   flex: {
     dur: 1.8,
     frames: [[0, P()], [0.2, P(F)], [0.38, P(F, { rootY: 0.02, chestY: 0.15, eLz: 2.1, eRz: -1.75 })], [0.56, P(F, { chestY: -0.15, eLz: 1.75, eRz: -2.1 })], [0.74, P(F, { rootY: 0.02 })], [0.9, P(F)], [1, P()]],
+  },
+  // A thank-you bow: right hand on his chest, bending low from the waist, holding it a moment.
+  bow: {
+    dur: 2.2,
+    frames: [
+      [0, P()],
+      [0.12, P({ aRx: -0.45, aRz: 0.2, eRx: -1.95, aLz: 0.08, headX: 0.05 })],
+      [0.35, P({ spineX: 0.7, chestX: 0.25, headX: 0.35, hipsX: 0.1, aRx: -0.55, aRz: 0.25, eRx: -1.95, aLx: 0.1, aLz: 0.05 })],
+      [0.68, P({ spineX: 0.72, chestX: 0.26, headX: 0.38, hipsX: 0.1, aRx: -0.55, aRz: 0.25, eRx: -1.95, aLx: 0.1, aLz: 0.05 })],
+      [0.88, P({ aRx: -0.45, aRz: 0.2, eRx: -1.95, aLz: 0.08 })],
+      [1, P()],
+    ],
+  },
+  // A high-five to the audience: wind up, then push the raised palm out toward them.
+  highfive: {
+    dur: 1.8,
+    frames: [
+      [0, P()],
+      // Wind up: hand up beside his head, elbow bent, leaning back a touch.
+      [0.25, P({ aRx: -0.35, aRz: -2.35, eRx: -1.3, spineX: -0.1, chestY: 0.12, headZ: -0.06 })],
+      // Slap: arm shoots up and out toward the audience, stepping into it.
+      [0.42, P({ aRx: -0.75, aRz: -2.05, eRx: -0.1, hRx: -0.4, spineX: 0.16, chestY: 0.2, thLx: -0.35, knLx: 0.35, headX: 0.05 })],
+      [0.66, P({ aRx: -0.75, aRz: -2.05, eRx: -0.1, hRx: -0.4, spineX: 0.16, chestY: 0.2, thLx: -0.35, knLx: 0.35, headX: 0.05 })],
+      [1, P()],
+    ],
   },
   // A ground-pound landing: deep squat, fists flung out, then back up.
   slam: {

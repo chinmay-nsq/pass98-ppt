@@ -140,7 +140,8 @@ cycle through Classic, Push, Stomp and Kick (the choice is remembered on this de
 - **Classic:** "ionate" shakes, then "98" smashes in from the right. No character.
 - The other three star the Orange Scout (the rigged model from `../orange-scout`, copied to
   `public/scout.glb`). Each ends with him flexing and settling beside "98", hands on hips.
-  - **Push (default):** he walks in from the right and pushes "ionate" to the left until it pops into
+  - **Push (default):** he walks in from the right, grips the "e" between his hands (his far hand
+    goes behind the letter) and pushes "ionate" to the left until it pops into
     "98", then stands beside it, relaxed.
   - **Stomp:** he drops from the top of the screen onto "ionate" and squashes it flat with a
     shockwave ("Pass" hops). He hops off and the flattened letters spring back up as "98".

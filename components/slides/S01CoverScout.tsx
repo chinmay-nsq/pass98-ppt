@@ -178,11 +178,60 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
         return Math.min(right + 0.5 * ppu, m.viewRight - W / 2);
       };
 
-      // Where his feet go so that the front of his hands touches `edge` in this pose.
+      // Where his feet go so that the front of his near hand touches `edge` in this pose (the far
+      // hand reaches further, round behind the letter).
       const feetForHands = (edge: number, p: Pose) => {
         const s = scoutRef.current;
-        const reach = s ? s.measureHands(p).x : -0.5 * ppu;
+        const reach = s ? s.measureEachHand(p).left.x - 0.07 * ppu : -0.5 * ppu;
         return edge - reach;
+      };
+
+      // A copy of the "e" layered in front of him, shown only in a small window around his far hand,
+      // measured from his pose every frame: that hand goes behind the letter while his body and near
+      // hand stay in front, so he grips the "e" between his hands. The copy mirrors the real e's
+      // squeeze and shake.
+      const gripClip = q("[data-grip-clip]");
+      const grip = q("[data-grip]");
+      let gripSync: (() => void) | null = null;
+      const startGrip = () => {
+        const s = scoutRef.current;
+        if (!s) return;
+        const e = oldChars[oldChars.length - 1] as HTMLElement;
+        const rr = el.getBoundingClientRect();
+        const r = e.getBoundingClientRect();
+        const cs = getComputedStyle(e);
+        const box = { x: r.left - rr.left, y: r.top - rr.top };
+        Object.assign(grip.style, {
+          width: `${r.width}px`,
+          height: `${r.height}px`,
+          font: cs.font,
+          letterSpacing: cs.letterSpacing,
+          lineHeight: cs.lineHeight,
+        });
+        grip.textContent = e.textContent;
+        gsap.set(gripClip, { opacity: 1 });
+        gripSync = () => {
+          const h = s.measureEachHand(pose);
+          const near = { x: feet.x + h.left.x, y: feet.y + h.left.y };
+          const far = { x: feet.x + h.right.x, y: feet.y + h.right.y };
+          const x0 = far.x - 0.3 * ppu;
+          const x1 = Math.max(x0, near.x - 0.06 * ppu);
+          const y0 = Math.min(near.y, far.y) - 0.2 * ppu;
+          const y1 = Math.max(near.y, far.y) + 0.2 * ppu;
+          Object.assign(gripClip.style, { left: `${x0}px`, top: `${y0}px`, width: `${x1 - x0}px`, height: `${y1 - y0}px`, filter: oldEl.style.filter });
+          Object.assign(grip.style, {
+            left: `${box.x - x0}px`,
+            top: `${box.y - y0}px`,
+            transform: e.style.transform,
+            transformOrigin: e.style.transformOrigin,
+          });
+        };
+        gsap.ticker.add(gripSync);
+      };
+      const stopGrip = () => {
+        if (gripSync) gsap.ticker.remove(gripSync);
+        gripSync = null;
+        gsap.set(gripClip, { opacity: 0 });
       };
 
       const spark = (x: number, y: number, spread = 1) => {
@@ -329,6 +378,7 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
         // 3. The push: "ionate" is squeezed to the left, the letters bunch up and shake harder,
         //    and he follows the right edge, legs driving.
         const prog = { p: 0 };
+        if (withScout) tl.call(startGrip, [], "push");
         const PUSH_S = 1.7;
         const t0 = { v: 0 };
         tl.to(
@@ -389,6 +439,7 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
           },
         });
         tl.add("pop");
+        tl.call(stopGrip, [], "pop");
 
         // 5. Pop: the squeezed letters burst, a flash, and "98" is standing where they were.
         const popX = m.left + wNew / 2;
@@ -776,6 +827,7 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
 
       const reset = () => {
         if (phase === "idle") return;
+        stopGrip();
         timeline?.kill();
         timeline = null;
         gsap.killTweensOf([h1, ...oldChars, ...passChars, ...digits, ...sparks, flash, newEl, slot, oldEl, actor, shadow, feet, surf]);
@@ -888,6 +940,10 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
           className="pointer-events-none absolute left-0 top-0 z-10 h-3 rounded-full opacity-0"
           style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.65), transparent 70%)" }}
         />
+        {/* The front of the "e" while he grips it (see startGrip). */}
+        <div data-grip-clip aria-hidden className="pointer-events-none absolute z-30 overflow-hidden opacity-0">
+          <span data-grip className="tg-word absolute inline-block" />
+        </div>
         <div data-actor aria-hidden className="pointer-events-none absolute left-0 top-0 z-20 opacity-0">
           {box && <ScoutStage pose={pose} width={box.w} height={box.h} onReady={onReady} onFail={onFail} />}
         </div>

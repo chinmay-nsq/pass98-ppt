@@ -69,7 +69,11 @@ export function walk(steps: number, facing = FACE_LEFT): Pose {
   });
 }
 
-/** Both hands out in front at chest height, leaning in, one leg forward and one braced behind. */
+/**
+ * Both hands out in front at chest height, leaning in, one leg forward and one braced behind. Seen
+ * from the front, the far hand sits a little deeper than the near one, so it can go behind the "e"
+ * while the near hand presses its edge: he grips the letter between his hands.
+ */
 export const PUSH: Pose = P({
   rootRot: FACE_LEFT,
   rootY: -0.03,
@@ -101,7 +105,7 @@ export function strain(t: number, effort: number): Pose {
   return P(PUSH, {
     rootY: PUSH.rootY - Math.abs(a) * 0.015 * e,
     spineX: PUSH.spineX + 0.06 * effort + a * 0.02,
-    chestY: a * 0.06 * e,
+    chestY: PUSH.chestY + a * 0.06 * e,
     headX: PUSH.headX - 0.05 * effort,
     headZ: Math.sin(t * 23) * 0.025 * effort,
     thLx: PUSH.thLx + a * 0.12 * e,

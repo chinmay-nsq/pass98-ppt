@@ -30,6 +30,8 @@ export interface ScoutApi {
   measureHands: (pose: Pose) => { x: number; y: number };
   /** Where the front-most (screen-left) of the feet is for `pose`, relative to his feet origin, in px. */
   measureFoot: (pose: Pose) => { x: number; y: number };
+  /** Both hands' positions for `pose`, relative to his feet origin, in px (y up is negative). */
+  measureEachHand: (pose: Pose) => { left: { x: number; y: number }; right: { x: number; y: number } };
 }
 
 type Bones = Record<string, THREE.Bone>;
@@ -165,6 +167,17 @@ export default function ScoutStage({
             }
             // Bone origins sit at the wrist; the fist reaches about 0.07 further out.
             return { x: (x - 0.07) * ppu, y: -y * ppu };
+          },
+          measureEachHand: (p) => {
+            applyPose(m, bones, p);
+            m.updateMatrixWorld(true);
+            const one = (name: string) => {
+              const b = bones[name];
+              if (!b) return { x: 0, y: 0 };
+              b.getWorldPosition(handPos);
+              return { x: handPos.x * ppu, y: -handPos.y * ppu };
+            };
+            return { left: one('handL'), right: one('handR') };
           },
           measureFoot: (p) => {
             applyPose(m, bones, p);

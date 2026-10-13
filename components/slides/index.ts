@@ -29,7 +29,7 @@ export const SLIDES: SlideDef[] = [
     title: 'The problem',
     section: 'Opening',
     notes:
-      'Today you practise alone, you read answers but never say them out loud, feedback is vague, and colleges cannot tell who is ready. Pass98 fixes each one: an AI interviews you out loud, you get a score and what to fix, an AI mentor coaches you, and your college sees who is ready. Let the strike-throughs finish. Then the bottom row: who uses it. Students, colleges, and our own team, all with one login, each in their own workspace. Colleges can add their own departments.',
+      'Today you practise alone, you never say your answers out loud, you never find out what went wrong, and colleges cannot tell who is ready. Pass98 fixes each one: an AI interviews you out loud, you get a score and what to fix, an AI mentor coaches you, and your college sees who is ready. Let the strike-throughs finish. Then the bottom row: who uses it. Students, colleges, and our own team, all with one login, each in their own workspace. Colleges can add their own departments.',
     Component: Problem,
   },
   {

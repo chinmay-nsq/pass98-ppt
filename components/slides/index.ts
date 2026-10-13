@@ -54,7 +54,31 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'report',
-    stage: { scout: { anchor: 'report-bars', x: 0.82, y: 0.387, size: 0.24, steps: [{ run: { from: 1.08, to: 0.82, dur: 1.1 } }, { face: -0.6 }, { loop: 'look', dur: 3 }, { face: -0.15 }, { loop: 'idle' }] } },
+    stage: {
+      scout: {
+        spot: { anchor: 'report-bars', x: 0.5 },
+        size: 0.22,
+        steps: [
+          { run: { from: 1.08, to: { anchor: 'report-bars', x: 0.5 }, dur: 1.5 } },
+          { face: -1.1 },
+          { wait: 0.5 },
+          { hop: { to: { anchor: 'score', x: 0.5, y: 0.12 }, dur: 1.1, height: 1.3, spin: 1 } },
+          { emit: 'report-stomp' },
+          { act: 'slam' },
+          { hop: { dur: 0.5, height: 0.5 } },
+          { emit: 'report-stomp' },
+          { act: 'slam' },
+          { hop: { dur: 0.75, height: 0.95, spin: 1 } },
+          { emit: 'report-stomp' },
+          { act: 'slam' },
+          { face: 0 },
+          { wait: 0.5 },
+          { hop: { to: { anchor: 'gauge-card', x: 0.1, y: 0.97 }, dur: 0.95, height: 0.9, spin: -1 } },
+          { act: 'slam' },
+          { loop: 'idle' },
+        ],
+      },
+    },
     title: 'The report',
     section: 'Candidate experience',
     steps: 1,
@@ -105,7 +129,7 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'close',
-    stage: { scout: { x: 0.86, y: 0.8, size: 0.36, steps: [{ run: { from: 1.1, to: 0.86, dur: 1.2 } }, { face: 0 }, { act: 'spin' }, { act: 'wave' }, { loop: 'idle' }], repeat: { act: 'wave', every: 5 } } },
+    stage: { scout: { spot: { x: 0.86, y: 0.8 }, size: 0.36, steps: [{ run: { from: 1.1, to: { x: 0.86, y: 0.8 }, dur: 1.2 } }, { face: 0 }, { act: 'spin' }, { act: 'wave' }, { loop: 'idle' }], repeat: { act: 'wave', every: 5 } } },
     title: 'Level up',
     section: 'Close',
     notes:

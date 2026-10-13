@@ -25,8 +25,8 @@ Press **F** for fullscreen. The URL tracks the slide (`#7`), so you can link str
 
 | Key | Does |
 |---|---|
-| `→` `↓` `Space` `Enter` | Next build, or next slide |
-| `←` `↑` `Backspace` | Previous |
+| `â†’` `â†“` `Space` `Enter` | Next build, or next slide |
+| `â†` `â†‘` `Backspace` | Previous |
 | `Home` / `End` | First / last slide |
 | `O` | Overview grid of every slide |
 | `N` | Speaker notes for the current slide |
@@ -88,7 +88,7 @@ Everything lives in a few places:
 | To change | Edit |
 |---|---|
 | Order, titles, speaker notes, which slide gets the core | `components/slides/index.ts` |
-| A slide's content or animation | `components/slides/S##….tsx` |
+| A slide's content or animation | `components/slides/S##â€¦.tsx` |
 | The numbers and domains | `lib/data.ts` |
 | Colours and shared styles | `app/globals.css` |
 | Entrance choreography for headings and `data-in` elements | `components/ui/SlideFrame.tsx` |
@@ -151,10 +151,10 @@ With any Scout version on, he also makes cameos on two later slides (hidden in C
 
 | Slide | What he does |
 | --- | --- |
-| 5, The report | Runs in, stands on the skill-bars card and looks down at the report, then just stands |
+| 5, The report | Runs onto the skill bars, leaps with a spin onto the score, stomps it three times (64 → 70 → 76 → 82, each with a shockwave; sparks on the last), then spins off to a superhero landing at the bottom-left of the score card |
 | 11, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
 
-A cameo can stand on a card marked `data-cameo="<name>"` (set `anchor` in its config), so he lands
+A cameo stands on cards marked `data-cameo="<name>"` (a `Spot` with `anchor`), hops between them, and can signal the slide (`emit`), so he lands
 on it at any screen size.
 
 The routines are set per slide in `components/slides/index.ts` (`stage.scout`) and played by

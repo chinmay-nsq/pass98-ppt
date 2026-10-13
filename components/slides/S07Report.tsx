@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { Glass, Chip } from '@/components/ui/Glass';
 import { gsap, useGSAP, reducedMotion } from '@/lib/gsap';
+import { readCoverVariant } from '@/lib/coverVariant';
+import { CAMEO_EVENT } from '@/components/deck/ScoutCameo';
 import type { SlideProps } from './types';
 
 const SKILLS = [
@@ -32,24 +34,87 @@ export default function Report({ step }: SlideProps) {
       const num = root.current?.querySelector<HTMLElement>('[data-score]');
       const bars = gsap.utils.toArray<HTMLElement>('[data-fill]');
       const nums = gsap.utils.toArray<HTMLElement>('[data-num]');
+      const verdict = root.current?.querySelector<HTMLElement>('[data-verdict]');
       if (!arc || !num) return;
+      // The Scout version tells a little story: the score first lands at 64, then he jumps on it
+      // and it climbs to 82. Without him (Classic, or reduced motion) it goes straight to 82.
+      const START = 64;
       const SCORE = 82;
+      const setVerdict = (v: number) => verdict && (verdict.textContent = v >= 80 ? 'Interview ready' : 'Almost there');
       if (reducedMotion()) {
         arc.style.strokeDashoffset = String(C * (1 - SCORE / 100));
         num.textContent = String(SCORE);
+        setVerdict(SCORE);
         bars.forEach((b) => (b.style.transform = `scaleX(${Number(b.dataset.fill) / 100})`));
         nums.forEach((n) => (n.textContent = n.dataset.num ?? ''));
         return;
       }
+      const withScout = readCoverVariant() !== 'classic';
+      const first = withScout ? START : SCORE;
       const state = { v: 0 };
-      gsap.to(arc, { strokeDashoffset: C * (1 - SCORE / 100), duration: 2, delay: 0.7, ease: 'power3.out' });
-      gsap.to(state, {
-        v: SCORE,
-        duration: 2,
-        delay: 0.7,
-        ease: 'power3.out',
-        onUpdate: () => (num.textContent = String(Math.round(state.v))),
-      });
+      const show = () => {
+        num.textContent = String(Math.round(state.v));
+        arc.style.strokeDashoffset = String(C * (1 - state.v / 100));
+        setVerdict(state.v);
+      };
+      gsap.to(state, { v: first, duration: 2, delay: 0.7, ease: 'power3.out', onUpdate: show });
+
+      // Each stomp pumps the score one notch (64 → 70 → 76 → 82): the number squashes, a shockwave
+      // ring leaves the gauge and the card shakes. The last one bursts into sparks.
+      const card = root.current?.querySelector<HTMLElement>('[data-cameo="gauge-card"]');
+      const shock = root.current?.querySelector<HTMLElement>('[data-shock]');
+      const sparks = gsap.utils.toArray<HTMLElement>('[data-gspark]', root.current);
+      const NOTCHES = [70, 76, SCORE];
+      let notch = 0;
+      const stomp = (to: number, strength: number) => {
+        gsap.killTweensOf(state);
+        gsap.to(state, { v: to, duration: 0.45, ease: 'power3.out', onUpdate: show });
+        gsap.fromTo(num, { scaleY: 0.6, scaleX: 1.25 }, { scaleY: 1, scaleX: 1, duration: 0.8, ease: 'elastic.out(1,0.35)' });
+        if (shock) gsap.fromTo(shock, { scale: 0.55, opacity: 0.9 }, { scale: 1.25 + strength * 0.25, opacity: 0, duration: 0.7, ease: 'power2.out' });
+        if (card) {
+          gsap.fromTo(
+            card,
+            { x: 0, y: 0 },
+            {
+              x: () => gsap.utils.random(-1, 1) * 5 * strength,
+              y: () => gsap.utils.random(0, 1) * 6 * strength,
+              duration: 0.04,
+              repeat: 7,
+              yoyo: true,
+              onComplete: () => void gsap.set(card, { x: 0, y: 0 }),
+            },
+          );
+        }
+        gsap.fromTo(arc, { filter: 'drop-shadow(0 0 26px rgb(254 102 0 / 1))' }, { filter: 'drop-shadow(0 0 10px rgb(254 102 0 / 0.8))', duration: 1 });
+      };
+      const burst = () => {
+        sparks.forEach((sp, i) => {
+          const ang = (i / sparks.length) * Math.PI * 2;
+          const d = gsap.utils.random(110, 200);
+          gsap.fromTo(
+            sp,
+            { x: 0, y: 0, opacity: 1, scale: gsap.utils.random(0.8, 1.6) },
+            { x: Math.cos(ang) * d, y: Math.sin(ang) * d, opacity: 0, scale: 0, duration: gsap.utils.random(0.7, 1.1), ease: 'power3.out' },
+          );
+        });
+        if (verdict) gsap.fromTo(verdict, { scale: 1.5, color: '#fe6600' }, { scale: 1, color: '#f5f1ec', duration: 0.9, ease: 'back.out(2)', clearProps: 'color,scale' });
+      };
+      const boost = (e: Event) => {
+        const what = (e as CustomEvent<string>).detail;
+        if (what === 'report-stomp' && notch < NOTCHES.length) {
+          stomp(NOTCHES[notch], notch + 1);
+          if (++notch === NOTCHES.length) burst();
+          fallback?.kill();
+        } else if (what === 'report-boost' && notch < NOTCHES.length) {
+          notch = NOTCHES.length;
+          gsap.killTweensOf(state);
+          gsap.to(state, { v: SCORE, duration: 1.5, ease: 'power2.out', onUpdate: show });
+        }
+      };
+      window.addEventListener(CAMEO_EVENT, boost);
+      // If he never arrives (the model failed to load), the score still reaches 82.
+      let fallback: gsap.core.Tween | null = null;
+      fallback = withScout ? gsap.delayedCall(12, () => boost(new CustomEvent(CAMEO_EVENT, { detail: 'report-boost' }))) : null;
       bars.forEach((b, i) => {
         gsap.fromTo(
           b,
@@ -68,6 +133,10 @@ export default function Report({ step }: SlideProps) {
           onUpdate: () => (n.textContent = String(Math.round(s.v))),
         });
       });
+      return () => {
+        window.removeEventListener(CAMEO_EVENT, boost);
+        fallback?.kill();
+      };
     },
     { scope: root },
   );
@@ -84,7 +153,7 @@ export default function Report({ step }: SlideProps) {
     >
       <div ref={root} className="grid h-full items-center gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-10">
         {/* Gauge */}
-        <Glass hot data-in="zoom" className="mx-auto grid place-items-center p-[clamp(1.25rem,2.4vw,2.25rem)]">
+        <Glass hot data-in="zoom" data-cameo="gauge-card" className="mx-auto grid place-items-center p-[clamp(1.25rem,2.4vw,2.25rem)]">
           <div className="relative size-[clamp(11rem,22vw,17rem)]">
             <svg viewBox="0 0 200 200" className="size-full -rotate-90">
               <circle cx="100" cy="100" r={R} fill="none" stroke="rgb(255 255 255 / 0.09)" strokeWidth="11" />
@@ -108,16 +177,23 @@ export default function Report({ step }: SlideProps) {
                 </linearGradient>
               </defs>
             </svg>
+            {/* Shockwave ring and sparks for the Scout's stomps. */}
+            <span data-shock aria-hidden className="pointer-events-none absolute inset-0 rounded-full border-2 border-brand opacity-0 shadow-[0_0_30px_rgb(254_102_0/0.8)]" />
+            <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2">
+              {Array.from({ length: 18 }, (_, i) => (
+                <span key={i} data-gspark className="absolute -ml-1 -mt-1 size-2 rounded-full bg-brand-soft opacity-0 shadow-[0_0_12px_#fe6600]" />
+              ))}
+            </div>
             <div className="absolute inset-0 grid place-items-center text-center">
               <div>
-                <p data-score className="tabular text-[clamp(3.4rem,7vw,5.6rem)] font-bold leading-none tracking-tighter">
+                <p data-score data-cameo="score" className="tabular text-[clamp(3.4rem,7vw,5.6rem)] font-bold leading-none tracking-tighter">
                   0
                 </p>
                 <p className="mono mt-1 text-[0.7rem] tracking-widest text-brand-soft">READINESS</p>
               </div>
             </div>
           </div>
-          <p className="mt-4 text-lg font-semibold tracking-tight">Interview ready</p>
+          <p data-verdict className="mt-4 text-lg font-semibold tracking-tight">Interview ready</p>
           <p className="text-xs text-faint">Sample report</p>
         </Glass>
 

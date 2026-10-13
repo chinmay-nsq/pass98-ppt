@@ -48,7 +48,7 @@ function IconButton({
   );
 }
 
-/** The thin, always-on frame around the slides: brand, position, progress and tools. */
+/** The thin, always-on frame around the slides: brand, position and tools (no progress bar). */
 export function DeckChrome({
   index,
   total,
@@ -57,7 +57,6 @@ export function DeckChrome({
   steps,
   onPrev,
   onNext,
-  onJump,
   onOverview,
   onNotes,
   onHelp,
@@ -82,27 +81,6 @@ export function DeckChrome({
 
       {/* Bottom bar */}
       <div className="absolute inset-x-0 bottom-0 z-30 px-[clamp(1rem,3vw,2.5rem)] pb-5">
-        <div className="mb-4 flex items-center gap-1">
-          {Array.from({ length: total }, (_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Go to slide ${i + 1}`}
-              onClick={() => onJump(i)}
-              className="group relative h-4 flex-1 cursor-pointer"
-            >
-              <span
-                className={cn(
-                  'absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full transition-all duration-500 group-hover:h-[5px]',
-                  i < index && 'bg-brand/70',
-                  i === index && 'bg-brand shadow-[0_0_12px_rgb(254_102_0/0.9)]',
-                  i > index && 'bg-white/12',
-                )}
-              />
-            </button>
-          ))}
-        </div>
-
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <IconButton label="Overview (O)" onClick={onOverview}>

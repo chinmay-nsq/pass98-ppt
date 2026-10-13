@@ -4,35 +4,45 @@ import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from '@/lib/gsap';
-import { ACTIONS, KEYS, LOOPS, P, sampleAction, type ActionName, type LoopName, type Pose } from '@/lib/scoutPose';
+import { ACTIONS, KEYS, LOOPS, P, TUCK, sampleAction, squat, type ActionName, type LoopName, type Pose } from '@/lib/scoutPose';
 import { FEET_FRACTION, VIEW_H } from './ScoutStage';
 
 const ScoutStage = dynamic(() => import('./ScoutStage'), { ssr: false });
 
 /**
+ * A place to stand. With `anchor`, it is a point on the element marked `data-cameo="<anchor>"`:
+ * `x` across its width and `y` down its height (0 = its top edge), so he lands on it at any screen
+ * size. Without one, `x` and `y` are fractions of the screen.
+ */
+export interface Spot {
+  anchor?: string;
+  x: number;
+  y?: number;
+}
+
+/**
  * One step of a cameo routine.
- *  - `run`: run from x `from` to x `to` (fractions of the screen width) over `dur` seconds.
+ *  - `run`: run in from screen x `from` (a fraction, e.g. 1.08 = off the right edge) to a spot.
+ *  - `hop`: jump from where he is to a spot (or in place), `height` model units above the higher of
+ *    the two, twirling `spin` full turns in the air.
  *  - `act`: play one of the model's moves once.
- *  - `loop`: hold a looping move (idle, dance) for `dur` seconds, or forever if `dur` is omitted.
+ *  - `loop`: hold a looping move (idle, dance, look) for `dur` seconds, or forever if omitted.
  *  - `face`: turn to face a direction (radians: 0 = audience, -π/2 = screen-left).
  *  - `wait`: idle for `dur` seconds.
+ *  - `emit`: tell the slide something happened (a `scout-cameo` window event with this name).
  */
 export type CameoStep =
-  | { run: { from: number; to: number; dur: number } }
+  | { run: { from: number; to: Spot; dur: number } }
+  | { hop: { to?: Spot; dur: number; height?: number; spin?: number } }
   | { act: ActionName }
   | { loop: LoopName; dur?: number }
   | { face: number }
-  | { wait: number };
+  | { wait: number }
+  | { emit: string };
 
 export interface CameoConfig {
-  /**
-   * Where his feet stand: fractions of the screen (x across, y down), or, with `anchor`, x is a
-   * fraction across that element and his feet stand on its top edge (y is then ignored).
-   */
-  x: number;
-  y: number;
-  /** Stand on the element marked `data-cameo="<anchor>"`, so he lands on it at any screen size. */
-  anchor?: string;
+  /** Where he stands before the first step (a run starts off-screen anyway). */
+  spot: Spot;
   /** His height as a fraction of the screen height. */
   size: number;
   /** Starting direction (radians); defaults to facing the audience. */
@@ -43,24 +53,26 @@ export interface CameoConfig {
   repeat?: { act: ActionName; every: number };
 }
 
+export const CAMEO_EVENT = 'scout-cameo';
+
 const MODEL_H = 1.9; // model units from feet to the top of the crest
 
 /**
  * The Orange Scout making a cameo on a slide. It runs a small script of moves (ported from the
  * model's own animation page): the pose eases toward each step's target every frame, exactly as the
- * original page does, and the canvas is moved for runs.
+ * original page does, and the canvas is moved for runs and hops.
  */
 export default function ScoutCameo({ config }: { config: CameoConfig }) {
   const pose = useRef<Pose>(P({ rootRot: config.facing ?? 0 })).current;
   const box = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+  const [size, setSize] = useState<{ w: number; h: number; ppu: number } | null>(null);
   const [ready, setReady] = useState(false);
 
   // Size from the viewport once on mount.
   useEffect(() => {
     const ppu = (config.size * window.innerHeight) / MODEL_H;
     const h = Math.round(VIEW_H * ppu);
-    setSize({ w: Math.round(h * 0.95), h });
+    setSize({ w: Math.round(h * 0.95), h, ppu });
   }, [config.size]);
 
   const onReady = useCallback(() => setReady(true), []);
@@ -69,26 +81,19 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
   useEffect(() => {
     if (!ready || !size || !box.current) return;
     const el = box.current;
-    const W = size.w;
-    const H = size.h;
-    const vw = () => window.innerWidth;
-    const vh = () => window.innerHeight;
+    const { w: W, h: H, ppu } = size;
 
-    const anchorEl = () => (config.anchor ? document.querySelector<HTMLElement>(`[data-cameo="${config.anchor}"]`) : null);
-    // Screen x (px) for a fraction: across the anchor when there is one, else across the screen.
-    const ax = (f: number) => {
-      const a = anchorEl();
-      if (!a) return f * vw();
-      const r = a.getBoundingClientRect();
-      return r.left + f * r.width;
+    // Screen position (px) of a spot, read live so he follows the layout as slides animate in.
+    const at = (s: Spot) => {
+      const a = s.anchor ? document.querySelector<HTMLElement>(`[data-cameo="${s.anchor}"]`) : null;
+      if (a) {
+        const r = a.getBoundingClientRect();
+        return { x: r.left + s.x * r.width, y: r.top + (s.y ?? 0) * r.height };
+      }
+      return { x: s.x * window.innerWidth, y: (s.y ?? 0) * window.innerHeight };
     };
-    const groundY = () => {
-      const a = anchorEl();
-      return a ? a.getBoundingClientRect().top : config.y * vh();
-    };
-    // Position along the current run, 0..1, or -1 when standing at config.x.
-    let runP = -1;
-    let x = config.x;
+
+    let spot: Spot = config.spot;
     let facing = config.facing ?? 0;
     let stepIndex = -1;
     let stepT = 0;
@@ -96,13 +101,15 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
     let lastRepeat = 0;
     let repeatAct: { name: ActionName; t: number } | null = null;
     let faceFrom = 0;
+    let hopFrom = { x: 0, y: 0 };
+    let spinRot = 0;
+    // Where he is drawn this frame (px), when moving between spots.
+    let moving: { x: number; y: number } | null = null;
     const cur: Pose = { ...pose };
 
     const place = () => {
-      const s = config.steps[stepIndex];
-      // Runs start off-screen (a screen fraction) and end on the spot (an anchor fraction).
-      const px = runP >= 0 && s && 'run' in s ? s.run.from * vw() + (ax(s.run.to) - s.run.from * vw()) * runP : ax(x);
-      gsap.set(el, { x: px - W / 2, y: groundY() - FEET_FRACTION * H });
+      const p = moving ?? at(spot);
+      gsap.set(el, { x: p.x - W / 2, y: p.y - FEET_FRACTION * H });
     };
 
     const next = () => {
@@ -110,14 +117,13 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       stepT = 0;
       const s = config.steps[stepIndex];
       if (!s) return;
-      if ('run' in s) {
-        runP = 0;
-        facing = s.run.to < s.run.from ? -Math.PI / 2 : Math.PI / 2;
-      } else if (runP >= 0) {
-        runP = -1;
-        x = (config.steps[stepIndex - 1] as { run: { to: number } }).run.to;
-      }
+      if ('run' in s) facing = at(s.run.to).x < s.run.from * window.innerWidth ? -Math.PI / 2 : Math.PI / 2;
+      if ('hop' in s) hopFrom = moving ?? at(spot);
       if ('face' in s) faceFrom = facing;
+      if ('emit' in s) {
+        window.dispatchEvent(new CustomEvent(CAMEO_EVENT, { detail: s.emit }));
+        next();
+      }
     };
     next();
     place();
@@ -133,9 +139,36 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       if (s) {
         if ('run' in s) {
           const p = Math.min(1, stepT / s.run.dur);
-          runP = p;
+          const to = at(s.run.to);
+          moving = { x: s.run.from * window.innerWidth + (to.x - s.run.from * window.innerWidth) * p, y: to.y };
           target = LOOPS.run(T);
-          if (p >= 1) next();
+          if (p >= 1) {
+            spot = s.run.to;
+            moving = null;
+            next();
+          }
+        } else if ('hop' in s) {
+          const p = Math.min(1, stepT / s.hop.dur);
+          const dest = s.hop.to ?? spot;
+          const to = at(dest);
+          const e = p * p * (3 - 2 * p);
+          const lift = (s.hop.height ?? 0.8) * ppu + Math.max(0, hopFrom.y - to.y);
+          moving = {
+            x: hopFrom.x + (to.x - hopFrom.x) * e,
+            y: hopFrom.y + (to.y - hopFrom.y) * p - Math.sin(Math.PI * p) * lift,
+          };
+          // Crouch, tuck in the air, then legs down for the landing.
+          target = p < 0.15 ? P(squat(0.8), { aLx: 0.6, aRx: 0.6 }) : p < 0.75 ? TUCK : P({ aLz: 1.2, aRz: -1.2 });
+          // The twirl happens while airborne, eased so take-off and landing face the same way.
+          const air = Math.min(1, Math.max(0, (p - 0.12) / 0.7));
+          spinRot = (s.hop.spin ?? 0) * Math.PI * 2 * (air * air * (3 - 2 * air));
+          fast = true;
+          if (p >= 1) {
+            spot = dest;
+            moving = null;
+            spinRot = 0;
+            next();
+          }
         } else if ('act' in s) {
           const a = ACTIONS[s.act];
           const p = stepT / a.dur;
@@ -179,7 +212,7 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       }
       cur.rootRot = target.rootRot;
       for (const n of KEYS) pose[n] = cur[n];
-      pose.rootRot = facing + cur.rootRot;
+      pose.rootRot = facing + cur.rootRot + spinRot;
       place();
     };
     gsap.ticker.add(tick);

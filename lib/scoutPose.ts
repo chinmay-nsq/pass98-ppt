@@ -210,7 +210,7 @@ export interface Action {
   frames: [number, Pose][];
 }
 
-export type ActionName = 'wave' | 'jump' | 'kick' | 'punch' | 'flex' | 'spin';
+export type ActionName = 'wave' | 'jump' | 'kick' | 'punch' | 'flex' | 'spin' | 'slam';
 
 export const ACTIONS: Record<ActionName, Action> = {
   wave: {
@@ -255,6 +255,15 @@ export const ACTIONS: Record<ActionName, Action> = {
   flex: {
     dur: 1.8,
     frames: [[0, P()], [0.2, P(F)], [0.38, P(F, { rootY: 0.02, chestY: 0.15, eLz: 2.1, eRz: -1.75 })], [0.56, P(F, { chestY: -0.15, eLz: 1.75, eRz: -2.1 })], [0.74, P(F, { rootY: 0.02 })], [0.9, P(F)], [1, P()]],
+  },
+  // A ground-pound landing: deep squat, fists flung out, then back up.
+  slam: {
+    dur: 0.55,
+    frames: [
+      [0, P(squat(1), { aLz: 1.25, aRz: -1.25, aLx: -0.35, aRx: -0.35, eLx: -0.9, eRx: -0.9, headX: -0.2 })],
+      [0.45, P(squat(0.9), { aLz: 1.1, aRz: -1.1, aLx: -0.3, aRx: -0.3, eLx: -0.9, eRx: -0.9, headX: -0.15 })],
+      [1, P()],
+    ],
   },
   spin: {
     dur: 1.5,

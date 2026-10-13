@@ -25,9 +25,14 @@ export type CameoStep =
   | { wait: number };
 
 export interface CameoConfig {
-  /** Where his feet stand, as fractions of the screen (x across, y down). */
+  /**
+   * Where his feet stand: fractions of the screen (x across, y down), or, with `anchor`, x is a
+   * fraction across that element and his feet stand on its top edge (y is then ignored).
+   */
   x: number;
   y: number;
+  /** Stand on the element marked `data-cameo="<anchor>"`, so he lands on it at any screen size. */
+  anchor?: string;
   /** His height as a fraction of the screen height. */
   size: number;
   /** Starting direction (radians); defaults to facing the audience. */
@@ -69,6 +74,20 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
     const vw = () => window.innerWidth;
     const vh = () => window.innerHeight;
 
+    const anchorEl = () => (config.anchor ? document.querySelector<HTMLElement>(`[data-cameo="${config.anchor}"]`) : null);
+    // Screen x (px) for a fraction: across the anchor when there is one, else across the screen.
+    const ax = (f: number) => {
+      const a = anchorEl();
+      if (!a) return f * vw();
+      const r = a.getBoundingClientRect();
+      return r.left + f * r.width;
+    };
+    const groundY = () => {
+      const a = anchorEl();
+      return a ? a.getBoundingClientRect().top : config.y * vh();
+    };
+    // Position along the current run, 0..1, or -1 when standing at config.x.
+    let runP = -1;
     let x = config.x;
     let facing = config.facing ?? 0;
     let stepIndex = -1;
@@ -76,12 +95,14 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
     let T = 0;
     let lastRepeat = 0;
     let repeatAct: { name: ActionName; t: number } | null = null;
-    let runFrom = 0;
     let faceFrom = 0;
     const cur: Pose = { ...pose };
 
     const place = () => {
-      gsap.set(el, { x: x * vw() - W / 2, y: config.y * vh() - FEET_FRACTION * H });
+      const s = config.steps[stepIndex];
+      // Runs start off-screen (a screen fraction) and end on the spot (an anchor fraction).
+      const px = runP >= 0 && s && 'run' in s ? s.run.from * vw() + (ax(s.run.to) - s.run.from * vw()) * runP : ax(x);
+      gsap.set(el, { x: px - W / 2, y: groundY() - FEET_FRACTION * H });
     };
 
     const next = () => {
@@ -90,9 +111,11 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       const s = config.steps[stepIndex];
       if (!s) return;
       if ('run' in s) {
-        runFrom = s.run.from;
-        x = s.run.from;
+        runP = 0;
         facing = s.run.to < s.run.from ? -Math.PI / 2 : Math.PI / 2;
+      } else if (runP >= 0) {
+        runP = -1;
+        x = (config.steps[stepIndex - 1] as { run: { to: number } }).run.to;
       }
       if ('face' in s) faceFrom = facing;
     };
@@ -110,7 +133,7 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       if (s) {
         if ('run' in s) {
           const p = Math.min(1, stepT / s.run.dur);
-          x = runFrom + (s.run.to - runFrom) * p;
+          runP = p;
           target = LOOPS.run(T);
           if (p >= 1) next();
         } else if ('act' in s) {

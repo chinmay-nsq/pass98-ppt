@@ -36,22 +36,24 @@ Press **F** for fullscreen. The URL tracks the slide (`#7`), so you can link str
 | Click the cover word | Starts the name animation |
 
 Some slides have **builds**: pressing next first reveals the next step on the same slide (the voice
-pipeline, the five pre-call steps, the focus plan
+pipeline, the four getting-started steps, the focus plan, the better English answer
 layers). Small dots at the bottom right show the build progress.
 
 ## The slides
 
 | # | Slide | Idea |
 |---|---|---|
-| 1 | Pass98 | "Passionate" turns into Pass98 on click (Classic, Push, Stomp or Kick; 1 build) |
+| 1 | Pass98 | "Passionate" turns into Pass98 on click (Push by default; 1 build) |
 | 2 | The problem | What students face today is struck out, Pass98's answer lights up, and who uses it |
-| 3 | Before the call | How you start: role, questions, devices, network, launch (4 builds) |
+| 3 | Getting started | Job role, your CV, questions from both, pick a time and start (3 builds) |
 | 4 | Meet Anna and Leo | The live voice interview and its pipeline (4 builds) |
 | 5 | The report | Readiness gauge, skill bars, focus plan (1 build) |
-| 6 | How colleges use Pass98 | Five simple steps, from uploading students to seeing who is ready |
-| 7 | Everything else | Leo, resume builder, ATS score, job match, cover letters, English, coding, dashboard |
-| 8 | Tech stack and architecture | Six groups of tools, and a four-step strip of how an answer flows |
-| 9 | Level up | Close |
+| 6 | Resume suite | Six templates dealt out as a fan |
+| 7 | Practice English | Grade board, fix, better answer (1 build) |
+| 8 | How colleges use Pass98 | Five simple steps, from uploading students to seeing who is ready |
+| 9 | Everything else | Leo, ATS score, job match, cover letters, coding, dashboard |
+| 10 | Tech stack and architecture | Six groups of tools, and a four-step strip of how an answer flows |
+| 11 | Level up | Close |
 
 Numbers on the report slide are **samples**, and the slide says so.
 
@@ -145,13 +147,15 @@ cycle through Classic, Push, Stomp and Kick (the choice is remembered on this de
   - **Kick:** he sprints in from the right and flying-kicks the "e". The letters are bowled off the
     screen, then "9" and "8" fall from the sky and slam into place.
 
-With any Scout version on, he also makes cameos on three later slides (hidden in Classic):
+With any Scout version on, he also makes cameos on two later slides (hidden in Classic):
 
 | Slide | What he does |
 | --- | --- |
-| 5, The report | Runs in, stands on top of the skill-bars card, jumps and flexes (flexes again every 7 s) |
-| 7, Everything else | Runs onto the Job match card, throws a punch and a kick, then flexes (punches again every 6 s) |
-| 9, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
+| 5, The report | Runs in, stands on the skill-bars card and looks down at the report, then just stands |
+| 11, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
+
+A cameo can stand on a card marked `data-cameo="<name>"` (set `anchor` in its config), so he lands
+on it at any screen size.
 
 The routines are set per slide in `components/slides/index.ts` (`stage.scout`) and played by
 `components/deck/ScoutCameo.tsx`, which uses the model's own moves (wave, jump, kick, punch, flex, spin,

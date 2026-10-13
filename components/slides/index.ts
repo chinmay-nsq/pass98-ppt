@@ -4,6 +4,8 @@ import Problem from './S02Problem';
 import Voice from './S05Voice';
 import Preflight from './S06Preflight';
 import Report from './S07Report';
+import Resume from './S09Resume';
+import English from './S12English';
 import Features from './S13Features';
 import Institute from './S15Institute';
 import Architecture from './S17Architecture';
@@ -34,11 +36,11 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'preflight',
-    title: 'Before the call',
+    title: 'Getting started',
     section: 'Candidate experience',
-    steps: 4,
+    steps: 3,
     notes:
-      'Five steps from a job post to a live call. Questions are sized to the session length: about 70% from the role and about 30% from the candidate’s own resume. The device check and the network test exist to protect the candidate: a bad connection is caught before a session is spent.',
+      'How fast you can start: four steps. Describe the job role: paste it, dictate it or pick a template. Add your CV, or build one right here. We combine your CV with the job description and write your questions, about 70% from the job and 30% from your CV. Pick how long you want, and Anna says hello. Press right to walk through the steps.',
     Component: Preflight,
   },
   {
@@ -52,13 +54,30 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'report',
-    stage: { scout: { x: 0.86, y: 0.387, size: 0.24, steps: [{ run: { from: 1.08, to: 0.86, dur: 1.1 } }, { face: 0 }, { wait: 1.2 }, { act: 'jump' }, { act: 'flex' }, { loop: 'idle' }], repeat: { act: 'flex', every: 7 } } },
+    stage: { scout: { anchor: 'report-bars', x: 0.82, y: 0.387, size: 0.24, steps: [{ run: { from: 1.08, to: 0.82, dur: 1.1 } }, { face: -0.6 }, { loop: 'look', dur: 3 }, { face: -0.15 }, { loop: 'idle' }] } },
     title: 'The report',
     section: 'Candidate experience',
     steps: 1,
     notes:
       'Two AI passes run in parallel, scoring and coaching, and merge into one report. The numbers on screen are a sample. Press right for the focus plan: weakest skill first, one solo action to take, and a measurable target. The wording is written with no subject, so the same report reads correctly to the candidate and to a recruiter.',
     Component: Report,
+  },
+  {
+    id: 'resume',
+    title: 'Resume suite',
+    section: 'Candidate experience',
+    notes:
+      'Upload a PDF or Word file once. The AI extracts skills, experience and links, then the same data feeds interview questions, Leo, an ATS score and a job-description match. The builder has six templates and exports to PDF and Word. Hover a card to see its name.',
+    Component: Resume,
+  },
+  {
+    id: 'english',
+    title: 'Practice English',
+    section: 'Candidate experience',
+    steps: 1,
+    notes:
+      'A spoken-English coach for candidates who know their content but struggle to say it. Grades from A to D are computed in code, not by the model, and the engine would rather miss a mistake than correct a correct sentence. The principle on screen: one focus, up to three fixes, one better answer, then try again. Recordings are kept for 24 hours only, after consent.',
+    Component: English,
   },
   {
     id: 'institute',
@@ -70,7 +89,6 @@ export const SLIDES: SlideDef[] = [
   },
   {
     id: 'features',
-    stage: { scout: { x: 0.86, y: 0.33, size: 0.2, steps: [{ run: { from: 1.08, to: 0.86, dur: 1.0 } }, { face: -0.55 }, { act: 'punch' }, { act: 'kick' }, { face: 0 }, { act: 'flex' }, { loop: 'idle' }], repeat: { act: 'punch', every: 6 } } },
     title: 'Everything else',
     section: 'Candidate experience',
     notes:

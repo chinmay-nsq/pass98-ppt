@@ -11,7 +11,7 @@ import type { SlideProps } from './types';
 const POINTS = [
   'Anna interviews you. Leo coaches you after',
   'Live sessions of 15 to 60 minutes',
-  'One short question per turn, two follow-ups at most',
+  'She asks you questions, and follow-ups on your answers',
   'Saved after every turn, so a dropped call resumes',
   'Never coaches, so the score stays honest',
 ];
@@ -137,9 +137,6 @@ export default function Voice({ step }: SlideProps) {
               </div>
             ))}
           </div>
-          <p data-in="fade" className="mono text-center text-[0.7rem] tracking-widest text-faint">
-            ALL OF IT OVER LIVEKIT · PRESS → TO WALK THE PIPELINE
-          </p>
         </div>
       </div>
     </SlideFrame>

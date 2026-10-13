@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Gauge, Mic, Rocket, Sparkles, Wand2, type LucideIcon } from 'lucide-react';
+import { FileText, Rocket, Sparkles, Wand2, type LucideIcon } from 'lucide-react';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { Glass, Chip } from '@/components/ui/Glass';
 import { cn } from '@/lib/cn';
@@ -18,37 +18,30 @@ interface Node {
 const NODES: Node[] = [
   {
     icon: Wand2,
-    label: 'Role',
-    title: 'Describe the role',
+    label: 'Job role',
+    title: 'Describe the job role',
     body: 'Paste a job description, dictate it, or pick a template. AI turns it into a role, a level and a skill list.',
     chips: ['Paste', 'Dictate', 'Template'],
   },
   {
+    icon: FileText,
+    label: 'Your CV',
+    title: 'Add your CV, or build one',
+    body: 'Upload your CV as a PDF or Word file. No CV yet? Build one right here with the resume builder.',
+    chips: ['Upload PDF or Word', 'Build one', 'Six templates'],
+  },
+  {
     icon: Sparkles,
     label: 'Questions',
-    title: 'Questions are written for you',
-    body: 'Sized to the session length. About 70% come from the role’s skills, about 30% from your own resume.',
-    chips: ['~70% skills & JD', '~30% your resume', 'must-have vs nice-to-have'],
-  },
-  {
-    icon: Mic,
-    label: 'Devices',
-    title: 'Check your camera and mic',
-    body: 'A live level meter proves the microphone works before the clock starts.',
-    chips: ['Camera', 'Microphone', 'Live level meter'],
-  },
-  {
-    icon: Gauge,
-    label: 'Network',
-    title: 'Test the connection',
-    body: 'Round-trip time, jitter and packet loss return a plain verdict, so a bad network never wastes a session.',
-    chips: ['GOOD', 'WARN', 'BLOCK'],
+    title: 'Your questions, written for you',
+    body: 'We combine your CV with the job description and write the questions. About 70% come from the job, about 30% from your CV.',
+    chips: ['~70% from the job', '~30% from your CV'],
   },
   {
     icon: Rocket,
-    label: 'Launch',
-    title: 'Five seconds to go',
-    body: 'A countdown, then Anna says hello and the interview begins. Pick 15, 30, 45 or 60 minutes.',
+    label: 'Start',
+    title: 'Pick a time and start',
+    body: 'Choose how long you want to practise. A short countdown, then Anna says hello and the interview begins.',
     chips: ['15 min', '30 min', '45 min', '60 min'],
   },
 ];
@@ -59,24 +52,24 @@ export default function Preflight({ step }: SlideProps) {
 
   return (
     <SlideFrame
-      eyebrow="Before the call"
+      eyebrow="Getting started"
       title={
         <>
-          From a job post to a <span className="text-gradient">live call</span> in minutes.
+          Your first interview in <span className="text-gradient">4 steps</span>.
         </>
       }
     >
       <div className="grid h-full content-center gap-8">
         {/* Stepper */}
         <div data-in className="relative mx-auto w-full max-w-4xl">
-          <div className="absolute left-[10%] right-[10%] top-6 h-px bg-white/12" />
+          <div className="absolute left-[12.5%] right-[12.5%] top-6 h-px bg-white/12" />
           <motion.div
-            className="absolute left-[10%] top-6 h-px origin-left bg-gradient-to-r from-brand to-brand-deep shadow-[0_0_14px_rgb(254_102_0)]"
-            style={{ width: '80%' }}
+            className="absolute left-[12.5%] top-6 h-px origin-left bg-gradient-to-r from-brand to-brand-deep shadow-[0_0_14px_rgb(254_102_0)]"
+            style={{ width: '75%' }}
             animate={{ scaleX: active / (NODES.length - 1) }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           />
-          <ol className="relative grid grid-cols-5">
+          <ol className="relative grid grid-cols-4">
             {NODES.map((n, i) => (
               <li key={n.label} className="flex flex-col items-center gap-2.5">
                 <motion.span

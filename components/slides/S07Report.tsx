@@ -123,7 +123,7 @@ export default function Report({ step }: SlideProps) {
 
         <div className="grid gap-5">
           {/* Skill bars */}
-          <Glass data-in="right" className="p-[clamp(1.1rem,2vw,1.75rem)]">
+          <Glass data-in="right" data-cameo="report-bars" className="p-[clamp(1.1rem,2vw,1.75rem)]">
             <div className="grid gap-3.5">
               {SKILLS.map((s) => (
                 <div key={s.name} className="grid grid-cols-[7.5rem_1fr_2.2rem] items-center gap-3 text-sm sm:grid-cols-[9rem_1fr_2.4rem]">

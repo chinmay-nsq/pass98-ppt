@@ -284,7 +284,7 @@ export function sampleAction(act: Action, p: number): Pose {
   return o;
 }
 
-export type LoopName = 'idle' | 'dance' | 'run';
+export type LoopName = 'idle' | 'dance' | 'run' | 'look';
 
 export const LOOPS: Record<LoopName, (t: number) => Pose> = {
   idle: (t) =>
@@ -297,6 +297,18 @@ export const LOOPS: Record<LoopName, (t: number) => Pose> = {
       aRz: -0.07 - Math.sin(t * 1.7) * 0.02,
       aLx: Math.sin(t * 0.8) * 0.04,
       aRx: -Math.sin(t * 0.8) * 0.04,
+    }),
+  // Looking down at something below him (the report), breathing.
+  look: (t) =>
+    P({
+      headX: 0.42 + Math.sin(t * 0.9) * 0.02,
+      headY: Math.sin(t * 0.5) * 0.05,
+      spineX: 0.14,
+      chestX: 0.06 + Math.sin(t * 1.7) * 0.012,
+      aLz: 0.08,
+      aRz: -0.08,
+      eLx: -0.25,
+      eRx: -0.25,
     }),
   dance: (t) => {
     const b = t * Math.PI * 2 * 1.05;

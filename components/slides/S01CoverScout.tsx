@@ -17,6 +17,7 @@ import {
   KICK_FACE,
   KICK_FLY,
   LAND,
+  LEAN,
   LOOK_UP,
   LOOPS,
   LUNGE,
@@ -169,6 +170,20 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
 
       // Where his feet end up: just right of "98", once the word has closed up around it. The title
       // is centred and moves as it shrinks, so the final layout is measured by trying it out.
+      // Push ending: where his feet go so his right hand rests flat on the right side of the "8",
+      // measured on the final layout (the title re-centres as the word closes up).
+      const leanX = () => {
+        const prev = slot.style.width;
+        slot.style.width = `${wNew}px`;
+        const rr = el.getBoundingClientRect();
+        const digit = digits[digits.length - 1].getBoundingClientRect();
+        slot.style.width = prev;
+        const edge = digit.right - rr.left - 0.035 * fs; // the glyph sits a little inside its box
+        const s = scoutRef.current;
+        const reach = s ? s.measureHands(LEAN).x : -0.45 * ppu;
+        return Math.min(edge - reach, window.innerWidth - rr.left - 0.4 * W);
+      };
+
       const finalX = (m: ReturnType<typeof measure>) => {
         const prev = slot.style.width;
         slot.style.width = `${wNew}px`;
@@ -219,13 +234,14 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
         gsap.delayedCall(0.8, () => {
           if (phase !== "done") return;
           const s = finalSpot();
-          feet.x = s.x;
+          const end = move === "push" ? LEAN : PROUD;
+          feet.x = move === "push" ? leanX() : s.x;
           feet.y = s.y;
           surf.y = NaN;
           place();
-          copyPose(pose, PROUD);
+          copyPose(pose, end);
           gsap.set([actor, shadow], { opacity: 1 });
-          startLife(PROUD);
+          startLife(end);
         });
       };
 
@@ -461,9 +477,9 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
         tl.to(h1, { scale: 1.045, duration: 0.2, ease: "power2.out", yoyo: true, repeat: 1 }, "pop+=0.55");
 
         if (withScout) {
-          // 8. He walks round to the right of the new word, turns to the audience and flexes,
-          //    then settles with his hands on his hips.
-          tl.add("settle", "pop+=0.95");
+          // 8. He shuffles up to the "8" and leans on it, one hand flat against the letter, ankles
+          //    crossed, and stays there.
+          tl.add("settle", "pop+=0.8");
           const go = { d: 0 };
           let from = 0;
           let to = 0;
@@ -471,25 +487,21 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
             go,
             {
               d: 1,
-              duration: 0.75,
-              ease: "power1.inOut",
+              duration: 0.7,
+              ease: "power2.inOut",
               onStart: () => {
                 from = feet.x;
-                to = finalSpot().x;
+                to = leanX();
               },
               onUpdate: () => {
-                const dir = to >= from ? 1 : -1;
                 feet.x = from + (to - from) * go.d;
-                copyPose(pose, walk(Math.abs(to - from) * go.d / (0.38 * ppu), dir > 0 ? 1.2 : FACE_LEFT));
                 place();
               },
             },
             "settle",
           );
-          poseTo(tl, FLEX, 0.45, "back.out(1.6)");
-          tl.to({}, { duration: 0.75 });
-          poseTo(tl, PROUD, 0.5, "power2.inOut");
-          tl.call(() => startLife(PROUD));
+          poseTo(tl, LEAN, 0.7, "power2.inOut", "settle");
+          tl.call(() => startLife(LEAN));
         }
       };
 

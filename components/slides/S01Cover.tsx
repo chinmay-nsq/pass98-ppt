@@ -398,8 +398,8 @@ function CoverClassic({ step, next }: SlideProps) {
 /**
  * Versions of the cover (and of the deck): "Classic" (the word fights itself and 98 smashes in)
  * and three Orange Scout versions, where he pushes "ionate" away, stomps on it from above, or
- * flying-kicks it off the screen (and makes cameos on later slides). Switch with
- * the small toggle, or press C. The choice is remembered on this device.
+ * flying-kicks it off the screen (and makes cameos on later slides). Push is the default; there is
+ * no on-screen switch, but C cycles the versions. The choice is remembered on this device.
  */
 export default function Cover(props: SlideProps) {
   const variant = useCoverVariant();
@@ -417,27 +417,6 @@ export default function Cover(props: SlideProps) {
   return (
     <div className="relative h-full">
       {variant === "classic" ? <CoverClassic key="classic" {...props} /> : <CoverScout key={variant} move={variant} {...props} />}
-      <div
-        role="group"
-        aria-label="Cover version"
-        className="absolute bottom-[clamp(4.6rem,9.5vh,6.2rem)] right-[clamp(1rem,3vw,2.5rem)] z-30 flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 text-[0.7rem] backdrop-blur"
-      >
-        <span className="mono px-2 tracking-widest text-faint">COVER</span>
-        {COVER_VARIANTS.map((v) => (
-          <button
-            key={v}
-            type="button"
-            aria-pressed={variant === v}
-            onClick={() => choose(v)}
-            className={cn(
-              "rounded-full px-3 py-1 font-medium capitalize transition",
-              variant === v ? "bg-brand text-white" : "text-dim hover:text-ink",
-            )}
-          >
-            {v}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }

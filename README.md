@@ -132,13 +132,14 @@ behind the **N** key in the deck follow the same lines.
 
 ## Cover versions
 
-The cover has a small **Cover: Classic | Push | Stomp | Kick** switch in the bottom-right corner (or
-press **C** on the cover to cycle). The choice is remembered on this device.
+The cover opens with **Push** by default. There is no on-screen switch; press **C** on the cover to
+cycle through Classic, Push, Stomp and Kick (the choice is remembered on this device).
 
 - **Classic:** "ionate" shakes, then "98" smashes in from the right. No character.
 - The other three star the Orange Scout (the rigged model from `../orange-scout`, copied to
   `public/scout.glb`). Each ends with him flexing and settling beside "98", hands on hips.
-  - **Push:** he walks in from the right and pushes "ionate" to the left until it pops into "98".
+  - **Push (default):** he walks in from the right and pushes "ionate" to the left until it pops into
+    "98", then leans on the "8" with one hand, ankles crossed.
   - **Stomp:** he drops from the top of the screen onto "ionate" and squashes it flat with a
     shockwave ("Pass" hops). He hops off and the flattened letters spring back up as "98".
   - **Kick:** he sprints in from the right and flying-kicks the "e". The letters are bowled off the

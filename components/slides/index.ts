@@ -47,9 +47,8 @@ export const SLIDES: SlideDef[] = [
     id: 'voice',
     title: 'Anna and Leo',
     section: 'Candidate experience',
-    steps: 4,
     notes:
-      'Meet Anna and Leo, your interview buddies. Anna interviews you, Leo coaches you after (more on him in a minute). Then Anna: she waits until you finish, listens to your whole justification... sorry, answer, will not scold you (she saves that for the report), 5 to 60 minutes, asks follow-ups. Four clicks walk the voice pipeline.',
+      'Meet Anna and Leo, your interview buddies. Anna interviews you, Leo coaches you after (more on him in a minute). Then Anna: she waits until you finish, listens to your whole justification... sorry, answer, will not scold you (she saves that for the report), 5 to 60 minutes, asks follow-ups. The pipeline at the bottom lights up on its own; one click moves on.',
     Component: Voice,
   },
   {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AudioLines, Ear, Languages, MessageSquareText, Volume2, type LucideIcon } from 'lucide-react';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { Glass } from '@/components/ui/Glass';
@@ -31,7 +31,7 @@ const STAGES: Stage[] = [
 
 const BARS = 28;
 
-export default function Voice({ step }: SlideProps) {
+export default function Voice(_props: SlideProps) {
   const room = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -56,8 +56,21 @@ export default function Voice({ step }: SlideProps) {
     { scope: room },
   );
 
-  // step 0 shows the room; steps 1-4 walk the voice pipeline stage by stage.
-  const active = step - 1;
+  // The voice pipeline lights up stage by stage on its own, then loops, so the slide needs only
+  // one click to leave.
+  const [active, setActive] = useState(-1);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setActive(3);
+      return;
+    }
+    let i = -1;
+    const t = window.setInterval(() => {
+      i = i >= 4 ? -1 : i + 1;
+      setActive(Math.min(i, 3));
+    }, 1300);
+    return () => window.clearInterval(t);
+  }, []);
 
   return (
     <SlideFrame

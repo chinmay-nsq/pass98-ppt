@@ -35,9 +35,9 @@ Press **F** for fullscreen. The URL tracks the slide (`#7`), so you can link str
 | Swipe left / right | Touch screens |
 | Click the cover word | Starts the name animation |
 
-Some slides have **builds**: pressing next first reveals the next step on the same slide (the voice
-pipeline, the four getting-started steps, the focus plan, the better English answer
-layers). Small dots at the bottom right show the build progress.
+Some slides have **builds**: pressing next first reveals the next step on the same slide (the four
+getting-started steps, the focus plan, the better English answer). Small dots at the bottom right
+show the build progress.
 
 ## The slides
 
@@ -46,7 +46,7 @@ layers). Small dots at the bottom right show the build progress.
 | 1 | Pass98 | "Passionate" turns into Pass98 on click (Push by default; 1 build) |
 | 2 | The problem | What students face today is struck out, Pass98's answer lights up, and who uses it |
 | 3 | Getting started | Job role, your CV, questions from both, pick a time and start (3 builds) |
-| 4 | Meet Anna and Leo | The live voice interview and its pipeline (4 builds) |
+| 4 | Meet Anna and Leo | The live voice interview; the pipeline lights up on its own |
 | 5 | The report | Readiness gauge, skill bars, focus plan (1 build) |
 | 6 | Resume suite | Six templates dealt out as a fan |
 | 7 | Practice English | Grade board, fix, better answer (1 build) |

@@ -1,7 +1,6 @@
 import type { SlideDef } from './types';
 import Cover from './S01Cover';
 import Problem from './S02Problem';
-import Personas from './S03Personas';
 import Voice from './S05Voice';
 import Preflight from './S06Preflight';
 import Report from './S07Report';
@@ -30,17 +29,8 @@ export const SLIDES: SlideDef[] = [
     title: 'The problem',
     section: 'Opening',
     notes:
-      'Candidates rehearse alone, with no pressure and vague feedback. Colleges cannot see who is ready. Pass98 replaces each of those with something concrete: a live voice interview, a scored report, a mentor that remembers, and readiness a college can see. Let the strike-throughs finish before you speak.',
+      'Today you practise alone, you read answers but never say them out loud, feedback is vague, and colleges cannot tell who is ready. Pass98 fixes each one: an AI interviews you out loud, you get a score and what to fix, an AI mentor coaches you, and your college sees who is ready. Let the strike-throughs finish. Then the bottom row: who uses it. Students, colleges, and our own team, all with one login, each in their own workspace. Colleges can add their own departments.',
     Component: Problem,
-  },
-  {
-    id: 'personas',
-    stage: { core: [7.0, 2.6] },
-    title: 'Three people, one login',
-    section: 'Product',
-    notes:
-      'One login, three workspaces: the candidate, the institute (a college, which can also add its own departments inside), and the super admin who runs the platform. All of them sit on the same interview engine.',
-    Component: Personas,
   },
   {
     id: 'preflight',

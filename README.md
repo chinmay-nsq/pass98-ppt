@@ -44,15 +44,14 @@ layers). Small dots at the bottom right show the build progress.
 | # | Slide | Idea |
 |---|---|---|
 | 1 | Pass98 | "Passionate" turns into Pass98 on click (Classic, Push, Stomp or Kick; 1 build) |
-| 2 | The problem | What students face today is struck out, Pass98's answer lights up |
-| 3 | Three people, one login | Candidate, college and super admin |
-| 4 | Before the call | How you start: role, questions, devices, network, launch (4 builds) |
-| 5 | Meet Anna and Leo | The live voice interview and its pipeline (4 builds) |
-| 6 | The report | Readiness gauge, skill bars, focus plan (1 build) |
-| 7 | How colleges use Pass98 | Five simple steps, from uploading students to seeing who is ready |
-| 8 | Everything else | Leo, resume builder, ATS score, job match, cover letters, English, coding, dashboard |
-| 9 | Tech stack and architecture | Six groups of tools, and a four-step strip of how an answer flows |
-| 10 | Level up | Close |
+| 2 | The problem | What students face today is struck out, Pass98's answer lights up, and who uses it |
+| 3 | Before the call | How you start: role, questions, devices, network, launch (4 builds) |
+| 4 | Meet Anna and Leo | The live voice interview and its pipeline (4 builds) |
+| 5 | The report | Readiness gauge, skill bars, focus plan (1 build) |
+| 6 | How colleges use Pass98 | Five simple steps, from uploading students to seeing who is ready |
+| 7 | Everything else | Leo, resume builder, ATS score, job match, cover letters, English, coding, dashboard |
+| 8 | Tech stack and architecture | Six groups of tools, and a four-step strip of how an answer flows |
+| 9 | Level up | Close |
 
 Numbers on the report slide are **samples**, and the slide says so.
 
@@ -149,9 +148,9 @@ With any Scout version on, he also makes cameos on three later slides (hidden in
 
 | Slide | What he does |
 | --- | --- |
-| 6, The report | Runs in, stands on top of the skill-bars card, jumps and flexes (flexes again every 7 s) |
-| 8, Everything else | Runs onto the Job match card, throws a punch and a kick, then flexes (punches again every 6 s) |
-| 10, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
+| 5, The report | Runs in, stands on top of the skill-bars card, jumps and flexes (flexes again every 7 s) |
+| 7, Everything else | Runs onto the Job match card, throws a punch and a kick, then flexes (punches again every 6 s) |
+| 9, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
 
 The routines are set per slide in `components/slides/index.ts` (`stage.scout`) and played by
 `components/deck/ScoutCameo.tsx`, which uses the model's own moves (wave, jump, kick, punch, flex, spin,

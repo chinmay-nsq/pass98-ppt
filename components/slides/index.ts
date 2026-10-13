@@ -5,15 +5,9 @@ import Personas from './S03Personas';
 import Voice from './S05Voice';
 import Preflight from './S06Preflight';
 import Report from './S07Report';
-import Leo from './S08Leo';
-import Resume from './S09Resume';
-import Tools from './S10Tools';
-import Challenges from './S11Challenges';
-import English from './S12English';
-import Referral from './S14Referral';
+import Features from './S13Features';
 import Institute from './S15Institute';
 import Architecture from './S17Architecture';
-import Choices from './S18Choices';
 import Close from './S21Close';
 
 /**
@@ -42,20 +36,11 @@ export const SLIDES: SlideDef[] = [
   {
     id: 'personas',
     stage: { core: [7.0, 2.6] },
-    title: 'Four personas',
+    title: 'Three people, one login',
     section: 'Product',
     notes:
       'One login, three workspaces: the candidate, the institute (a college, which can also add its own departments inside), and the super admin who runs the platform. All of them sit on the same interview engine.',
     Component: Personas,
-  },
-  {
-    id: 'voice',
-    title: 'Anna and Leo',
-    section: 'Candidate experience',
-    steps: 4,
-    notes:
-      'Meet Anna and Leo, your interview buddies. Anna interviews you, Leo coaches you after (more on him soon). Then Anna: she waits until you finish, listens to your whole justification... sorry, answer, will not scold you (she saves that for the report), 5 to 60 minutes, asks follow-ups. Four clicks walk the voice pipeline.',
-    Component: Voice,
   },
   {
     id: 'preflight',
@@ -65,6 +50,15 @@ export const SLIDES: SlideDef[] = [
     notes:
       'Five steps from a job post to a live call. Questions are sized to the session length: about 70% from the role and about 30% from the candidate’s own resume. The device check and the network test exist to protect the candidate: a bad connection is caught before a session is spent.',
     Component: Preflight,
+  },
+  {
+    id: 'voice',
+    title: 'Anna and Leo',
+    section: 'Candidate experience',
+    steps: 4,
+    notes:
+      'Meet Anna and Leo, your interview buddies. Anna interviews you, Leo coaches you after (more on him in a minute). Then Anna: she waits until you finish, listens to your whole justification... sorry, answer, will not scold you (she saves that for the report), 5 to 60 minutes, asks follow-ups. Four clicks walk the voice pipeline.',
+    Component: Voice,
   },
   {
     id: 'report',
@@ -77,63 +71,21 @@ export const SLIDES: SlideDef[] = [
     Component: Report,
   },
   {
-    id: 'leo',
-    title: 'Leo, the mentor',
-    section: 'Candidate experience',
-    notes:
-      'Remember Leo? He is your coach after the interview. He reads your reports. He remembers everything about you (quietly: so be careful what you tell him).',
-    Component: Leo,
-  },
-  {
-    id: 'resume',
-    title: 'Resume suite',
-    section: 'Candidate experience',
-    notes:
-      'Upload a PDF or Word file once. The AI extracts skills, experience and links, then the same data feeds interview questions, Leo, an ATS score and a job-description match. The builder has six templates and exports to PDF and Word. Hover a card to see its name.',
-    Component: Resume,
-  },
-  {
-    id: 'tools',
-    title: 'Career tools',
-    section: 'Candidate experience',
-    notes:
-      'You can write your cover letters here too, so the email you send impresses them. Every rewrite is saved as a version.',
-    Component: Tools,
-  },
-  {
-    id: 'challenges',
-    stage: { scout: { x: 0.858, y: 0.343, size: 0.23, steps: [{ run: { from: 1.08, to: 0.858, dur: 1.0 } }, { face: -0.55 }, { act: 'punch' }, { act: 'kick' }, { face: 0 }, { act: 'flex' }, { loop: 'idle' }], repeat: { act: 'punch', every: 6 } } },
-    title: 'Coding missions',
-    section: 'Candidate experience',
-    notes:
-      'Coding practice is framed as missions: topics are sectors, difficulty tiers are cut into stages of eleven that end in a trophy, there is a daily mission and a weekly boss, a streak, and eleven badges that are computed from solves rather than stored. Code runs in a sandbox in nine languages, with an AI review of each submission.',
-    Component: Challenges,
-  },
-  {
-    id: 'english',
-    title: 'Practice English',
-    section: 'Candidate experience',
-    steps: 1,
-    notes:
-      'A spoken-English coach for candidates who know their content but struggle to say it. Grades from A to D are computed in code, not by the model, and the engine would rather miss a mistake than correct a correct sentence. The principle on screen: one focus, up to three fixes, one better answer, then try again. Recordings are kept for 24 hours only, after consent.',
-    Component: English,
-  },
-  {
-    id: 'referral',
-    stage: { scout: { x: 0.53, y: 0.8, size: 0.34, steps: [{ act: 'spin' }, { loop: 'dance' }] } },
-    title: 'Referral loop',
-    section: 'Business',
-    notes:
-      'Give seven days, get seven days. A friend who joins gets a 14-day trial. The referrer is rewarded only when that friend completes a first interview, so fake accounts earn nothing, with a cap of ten rewards a month. Self-referral is impossible by construction.',
-    Component: Referral,
-  },
-  {
     id: 'institute',
     title: 'For colleges',
     section: 'B2B',
     notes:
-      'The key decision: the interview engine is reused unchanged. A college imports a roster, organises departments, assigns a test through a four-step wizard, and reads reports it can release when it chooses. Enterprise has 250 seats and 1,500 assigned interviews; the campus plan has no seat cap and 5,000 interviews. Students’ plans are derived from the institute’s, so one change updates everyone.',
+      'How colleges use it, in five steps: upload one Excel sheet of students, group them into departments, give them an interview by picking a role and a date, students practise with Anna, and the placement team sees a report for every student. They decide when students see their reports. Every student practises, one dashboard for the team, nothing new for students to install.',
     Component: Institute,
+  },
+  {
+    id: 'features',
+    stage: { scout: { x: 0.86, y: 0.33, size: 0.2, steps: [{ run: { from: 1.08, to: 0.86, dur: 1.0 } }, { face: -0.55 }, { act: 'punch' }, { act: 'kick' }, { face: 0 }, { act: 'flex' }, { loop: 'idle' }], repeat: { act: 'punch', every: 6 } } },
+    title: 'Everything else',
+    section: 'Candidate experience',
+    notes:
+      'Everything else, in one breath. Leo is your mentor: he reads your reports and remembers you. Build your resume, check its ATS score, match it to a job post, write a cover letter. Practise spoken English and get graded. Solve coding problems as missions. All of it in one dashboard.',
+    Component: Features,
   },
   {
     id: 'architecture',
@@ -141,16 +93,8 @@ export const SLIDES: SlideDef[] = [
     section: 'Engineering',
     steps: 2,
     notes:
-      'Follow one answer through the system. Top: the web and mobile apps; your answer goes to one API that checks who you are and what your plan allows. Click: the API hands the hard work to specialists (OpenAI thinks, Deepgram hears, Cartesia speaks, LiveKit carries the call, Razorpay takes payments). Click: everything lands in one database with files in S3, and the report travels back up the same way.',
+      'The tech stack, layer by layer, following one answer. Top: React web app and the iOS and Android apps. Your answer goes to one Express API in TypeScript that checks who you are and what your plan allows. Click: the specialists, OpenAI thinks, Deepgram hears, Cartesia speaks, LiveKit carries the call, Judge0 runs code, Razorpay takes payments. Click: everything lands in PostgreSQL with Redis and files in S3, and the report travels back up the same way.',
     Component: Architecture,
-  },
-  {
-    id: 'choices',
-    title: 'Engineering choices',
-    section: 'Engineering',
-    notes:
-      'Four decisions that paid off. The report asks the model for turn numbers instead of transcript text, which removed about three quarters of its output. Sign-up writes everything in one transaction. English recordings are saved on the device before upload. And recordings expire after a day.',
-    Component: Choices,
   },
   {
     id: 'close',

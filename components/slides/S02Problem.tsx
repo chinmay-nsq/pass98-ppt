@@ -7,17 +7,17 @@ import { Glass } from '@/components/ui/Glass';
 import { gsap, useGSAP, reducedMotion } from '@/lib/gsap';
 
 const OLD_WAY = [
-  'Rehearse answers alone, in the mirror',
-  'Skim a PDF of "top 100 questions"',
-  'Hear "be more confident" as feedback',
-  'Guess which students are ready',
+  'You practise alone, with nobody asking questions',
+  'You read answers, but never say them out loud',
+  'Feedback is vague: "be more confident"',
+  "Colleges can't tell who is ready",
 ];
 
 const NEW_WAY = [
-  'A live voice interview, with real pressure',
-  'A scored report you can act on',
-  'A mentor that remembers you',
-  'Readiness your college can see',
+  'An AI interviews you, out loud',
+  'You get a score, and what to fix',
+  'An AI mentor coaches you until you are ready',
+  'Your college sees who is ready',
 ];
 
 export default function Problem() {
@@ -56,7 +56,7 @@ export default function Problem() {
     >
       <div ref={ref} className="grid h-full content-center gap-6 lg:grid-cols-2 lg:gap-10">
         <Glass data-in="left" className="p-[clamp(1.25rem,2.4vw,2.25rem)]">
-          <p className="eyebrow mb-5 !text-faint">The old way</p>
+          <p className="eyebrow mb-5 !text-faint">Today</p>
           <ul className="grid gap-5">
             {OLD_WAY.map((t) => (
               <li key={t} className="relative text-[clamp(1.05rem,1.7vw,1.5rem)] font-medium tracking-tight">

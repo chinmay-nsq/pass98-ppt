@@ -36,32 +36,25 @@ Press **F** for fullscreen. The URL tracks the slide (`#7`), so you can link str
 | Click the cover word | Starts the name animation |
 
 Some slides have **builds**: pressing next first reveals the next step on the same slide (the voice
-pipeline, the five pre-call steps, the focus plan, the better English answer, the architecture
+pipeline, the five pre-call steps, the focus plan, the architecture
 layers). Small dots at the bottom right show the build progress.
 
 ## The slides
 
 | # | Slide | Idea |
 |---|---|---|
-| 1 | Pass98 | "Passionate" waits; on click "ionate" fights and vibrates, then "98" smashes in and it becomes Pass98 (1 build) |
-| 2 | The problem | The old way is struck out, the new way lights up |
-| 3 | Four personas | One login, four workspaces |
-| 4 | Meet Anna | The live voice interview and its pipeline (4 builds) |
-| 5 | Before the call | Role, questions, devices, network, launch (4 builds) |
+| 1 | Pass98 | "Passionate" turns into Pass98 on click (Classic, Push, Stomp or Kick; 1 build) |
+| 2 | The problem | What students face today is struck out, Pass98's answer lights up |
+| 3 | Three people, one login | Candidate, college and super admin |
+| 4 | Before the call | How you start: role, questions, devices, network, launch (4 builds) |
+| 5 | Meet Anna and Leo | The live voice interview and its pipeline (4 builds) |
 | 6 | The report | Readiness gauge, skill bars, focus plan (1 build) |
-| 7 | Leo, the mentor | A scripted, streaming chat |
-| 8 | Resume suite | Six templates dealt out as a fan |
-| 9 | Career tools | Versions of an outreach message |
-| 10 | Coding missions | Constellation map, streak, 11 badges |
-| 11 | Practice English | Grade board, fix, better answer (1 build) |
-| 12 | Referral loop | Give 7 days, get 7 days |
-| 13 | For colleges | Roster to reports, plus the enterprise tiers |
-| 14 | What happens when you hit Start | One answer's trip through the four layers (2 builds) |
-| 15 | Engineering choices | Four decisions with a number each |
-| 16 | Level up | Close |
+| 7 | How colleges use Pass98 | Five simple steps, from uploading students to seeing who is ready |
+| 8 | Everything else | Leo, resume builder, ATS score, job match, cover letters, English, coding, dashboard |
+| 9 | Tech stack and architecture | One answer's trip through the four layers (2 builds) |
+| 10 | Level up | Close |
 
-Numbers on slides 7 (the report), 8 (the chat) and 10 (the draft) are **samples**, and the slides
-say so where it matters.
+Numbers on the report slide are **samples**, and the slide says so.
 
 ## What it is built with
 
@@ -152,14 +145,13 @@ press **C** on the cover to cycle). The choice is remembered on this device.
   - **Kick:** he sprints in from the right and flying-kicks the "e". The letters are bowled off the
     screen, then "9" and "8" fall from the sky and slam into place.
 
-With any Scout version on, he also makes cameos on four later slides (hidden in Classic):
+With any Scout version on, he also makes cameos on three later slides (hidden in Classic):
 
 | Slide | What he does |
 | --- | --- |
 | 6, The report | Runs in, stands on top of the skill-bars card, jumps and flexes (flexes again every 7 s) |
-| 10, Challenges | Runs onto the mission card, throws a punch and a kick, then flexes (punches again every 6 s) |
-| 12, Referrals | Spins in the middle of the slide, then keeps dancing |
-| 16, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
+| 8, Everything else | Runs onto the Job match card, throws a punch and a kick, then flexes (punches again every 6 s) |
+| 10, Closing | Runs in, spins, waves at the audience (waves again every 5 s) |
 
 The routines are set per slide in `components/slides/index.ts` (`stage.scout`) and played by
 `components/deck/ScoutCameo.tsx`, which uses the model's own moves (wave, jump, kick, punch, flex, spin,

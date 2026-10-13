@@ -47,7 +47,7 @@ export default function Architecture({ step }: SlideProps) {
 
   return (
     <SlideFrame
-      eyebrow="Under the hood"
+      eyebrow="Tech stack and architecture"
       subtitle="Your voice goes in at the top. A scored report comes out the bottom. Here is everything it passes through."
       title={
         <>

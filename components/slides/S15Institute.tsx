@@ -7,17 +7,17 @@ import { Glass } from '@/components/ui/Glass';
 import { gsap, useGSAP, reducedMotion } from '@/lib/gsap';
 
 const FLOW: { icon: LucideIcon; title: string; body: string }[] = [
-  { icon: FileSpreadsheet, title: 'Import the roster', body: 'CSV or XLSX, up to 2,000 rows, checked before anything is saved' },
-  { icon: FolderTree, title: 'Organise', body: 'Departments, each with its own admins' },
-  { icon: ClipboardList, title: 'Assign a test', body: 'A four-step wizard: role, who, timing, review' },
-  { icon: Mic, title: 'Students interview', body: 'The same AI engine, unchanged' },
-  { icon: BarChart3, title: 'Read the reports', body: 'Released when you decide' },
+  { icon: FileSpreadsheet, title: 'Add your students', body: 'Upload one Excel sheet. Everyone gets a login.' },
+  { icon: FolderTree, title: 'Make departments', body: 'Group students by branch or batch.' },
+  { icon: ClipboardList, title: 'Give an interview', body: 'Pick the role and the date. Done.' },
+  { icon: Mic, title: 'Students practise', body: 'With Anna, from any phone or laptop.' },
+  { icon: BarChart3, title: 'See who is ready', body: 'A report for every student, and you decide when they see it.' },
 ];
 
-const TIERS = [
-  { name: 'Enterprise trial', big: '10', unit: 'seats', sub: '20 assigned interviews · 14 days' },
-  { name: 'Enterprise', big: '250', unit: 'seats', sub: '1,500 assigned interviews' },
-  { name: 'Campus', big: '5,000', unit: 'interviews', sub: 'No seat cap, whole college' },
+const WINS = [
+  { big: 'Every', label: 'student practises, not just the confident few' },
+  { big: 'One', label: 'dashboard for the placement team' },
+  { big: 'Zero', label: 'extra setup for students: same app, same login' },
 ];
 
 export default function Institute() {
@@ -45,10 +45,10 @@ export default function Institute() {
       eyebrow="For colleges"
       title={
         <>
-          The same engine, at <span className="text-gradient">campus scale</span>.
+          How <span className="text-gradient">colleges</span> use Pass98.
         </>
       }
-      subtitle="Institutes reuse the interview and scoring pipeline completely unchanged. Nothing about the candidate product had to be rewritten."
+      subtitle="Your placement team prepares the whole batch, and knows who is ready before companies arrive."
     >
       <div ref={root} className="grid h-full content-center gap-8">
         <div className="relative">
@@ -70,13 +70,10 @@ export default function Institute() {
         </div>
 
         <div data-in className="grid gap-3 sm:grid-cols-3">
-          {TIERS.map((t, i) => (
-            <Glass key={t.name} hot={i === 2} className="p-5">
-              <p className="mono text-[0.68rem] tracking-widest text-faint">{t.name.toUpperCase()}</p>
-              <p className="mt-2 text-4xl font-bold tracking-tighter">
-                {t.big} <span className="text-base font-medium text-dim">{t.unit}</span>
-              </p>
-              <p className="mt-1 text-sm text-dim">{t.sub}</p>
+          {WINS.map((w, i) => (
+            <Glass key={w.big} hot={i === 0} className="p-5">
+              <p className="text-4xl font-bold tracking-tighter">{w.big}</p>
+              <p className="mt-1 text-sm text-dim">{w.label}</p>
             </Glass>
           ))}
         </div>

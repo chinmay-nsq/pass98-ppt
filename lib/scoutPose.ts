@@ -170,31 +170,8 @@ export const KICK_FLY: Pose = P({
 /** Looking up at something falling, hands half raised. */
 export const LOOK_UP: Pose = P({ rootRot: -0.45, headX: -0.45, chestX: -0.08, aLx: -0.4, aRx: -0.4, aLz: 0.35, aRz: -0.35, eLx: -0.9, eRx: -0.9 });
 
-/**
- * Leaning on the "8" to his right side (screen-left): turned a little toward it, upper body tilted
- * in, right hand flat against the letter, left hand on the hip, ankles crossed. Cool and done.
- */
-export const LEAN: Pose = P({
-  rootRot: -0.25,
-  // The whole body tilts toward the letter from the hips; feet stay out, like leaning on a wall.
-  hipsZ: 0.3,
-  spineZ: 0.04,
-  headZ: -0.22,
-  headY: 0.15,
-  aRz: -1.3,
-  aRx: -0.2,
-  eRx: -0.2,
-  aLz: 0.55,
-  aLx: 0.15,
-  eLx: -1.3,
-  eLy: 0.5,
-  // Left leg crossed in front of the right, toe resting on the ground.
-  thLz: -0.36,
-  thLx: -0.1,
-  knLx: 0.18,
-  ftLx: 0.35,
-  thRz: -0.12,
-});
+/** Standing beside the word, relaxed: arms down, turned slightly toward it. Simple. */
+export const STAND: Pose = P({ rootRot: -0.2, aLz: 0.1, aRz: -0.1, eLx: -0.2, eRx: -0.2, headY: 0.08 });
 
 /** Gentle idle life on top of a base pose: breathing and a slight sway. */
 export function idle(base: Pose, t: number): Pose {

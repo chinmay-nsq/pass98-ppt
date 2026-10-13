@@ -139,7 +139,7 @@ cycle through Classic, Push, Stomp and Kick (the choice is remembered on this de
 - The other three star the Orange Scout (the rigged model from `../orange-scout`, copied to
   `public/scout.glb`). Each ends with him flexing and settling beside "98", hands on hips.
   - **Push (default):** he walks in from the right and pushes "ionate" to the left until it pops into
-    "98", then leans on the "8" with one hand, ankles crossed.
+    "98", then stands beside it, relaxed.
   - **Stomp:** he drops from the top of the screen onto "ionate" and squashes it flat with a
     shockwave ("Pass" hops). He hops off and the flattened letters spring back up as "98".
   - **Kick:** he sprints in from the right and flying-kicks the "e". The letters are bowled off the
@@ -158,6 +158,6 @@ The routines are set per slide in `components/slides/index.ts` (`stage.scout`) a
 dance, run) from `lib/scoutPose.ts`.
 
 The Scout versions use three.js directly (`components/deck/ScoutStage.tsx`) and the poses in
-`lib/scoutPose.ts`, ported from the model's own `orange-scout/web/index.html`. The model is 7.9 MB,
+`lib/scoutPose.ts`, ported from the model's own `orange-scout/web/index.html`. The model is 1.6 MB (meshopt-compressed from 7.9 MB),
 so it only loads when the Scout version is on screen. It needs a GPU: on machines without one the
 browser draws it slowly, so test the laptop you will present from.

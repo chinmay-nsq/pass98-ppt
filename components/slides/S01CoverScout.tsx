@@ -17,7 +17,7 @@ import {
   KICK_FACE,
   KICK_FLY,
   LAND,
-  LEAN,
+  STAND,
   LOOK_UP,
   LOOPS,
   LUNGE,
@@ -38,7 +38,7 @@ import type { ScoutApi } from "@/components/deck/ScoutStage";
 import { FEET_FRACTION, VIEW_H } from "@/components/deck/ScoutStage";
 import type { SlideProps } from "./types";
 
-// three.js and the 7.9 MB model load only when this version of the cover is shown.
+// three.js and the 1.6 MB model load only when this version of the cover is shown.
 const ScoutStage = dynamic(() => import("@/components/deck/ScoutStage"), { ssr: false });
 
 /**
@@ -170,20 +170,6 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
 
       // Where his feet end up: just right of "98", once the word has closed up around it. The title
       // is centred and moves as it shrinks, so the final layout is measured by trying it out.
-      // Push ending: where his feet go so his right hand rests flat on the right side of the "8",
-      // measured on the final layout (the title re-centres as the word closes up).
-      const leanX = () => {
-        const prev = slot.style.width;
-        slot.style.width = `${wNew}px`;
-        const rr = el.getBoundingClientRect();
-        const digit = digits[digits.length - 1].getBoundingClientRect();
-        slot.style.width = prev;
-        const edge = digit.right - rr.left - 0.035 * fs; // the glyph sits a little inside its box
-        const s = scoutRef.current;
-        const reach = s ? s.measureHands(LEAN).x : -0.45 * ppu;
-        return Math.min(edge - reach, window.innerWidth - rr.left - 0.4 * W);
-      };
-
       const finalX = (m: ReturnType<typeof measure>) => {
         const prev = slot.style.width;
         slot.style.width = `${wNew}px`;
@@ -234,8 +220,8 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
         gsap.delayedCall(0.8, () => {
           if (phase !== "done") return;
           const s = finalSpot();
-          const end = move === "push" ? LEAN : PROUD;
-          feet.x = move === "push" ? leanX() : s.x;
+          const end = move === "push" ? STAND : PROUD;
+          feet.x = move === "push" ? finalX(measure()) : s.x;
           feet.y = s.y;
           surf.y = NaN;
           place();
@@ -283,10 +269,10 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
       // ── The story ───────────────────────────────────────────────────────────────────
       const play = () => {
         if (phase === "playing" || phase === "done") return;
-        // Wait for the model (it is large); if it never arrives, play without him.
+        // Wait for the model on a slow connection; if it never arrives, play without him.
         if (motionOk && !scoutRef.current && !failed.current) {
           phase = "waiting";
-          gsap.delayedCall(4, () => {
+          gsap.delayedCall(12, () => {
             if (phase === "waiting") {
               failed.current = true;
               run();
@@ -477,8 +463,7 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
         tl.to(h1, { scale: 1.045, duration: 0.2, ease: "power2.out", yoyo: true, repeat: 1 }, "pop+=0.55");
 
         if (withScout) {
-          // 8. He shuffles up to the "8" and leans on it, one hand flat against the letter, ankles
-          //    crossed, and stays there.
+          // 8. He steps to the right of "98", turns to the audience and just stands there, relaxed.
           tl.add("settle", "pop+=0.8");
           const go = { d: 0 };
           let from = 0;
@@ -491,7 +476,7 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
               ease: "power2.inOut",
               onStart: () => {
                 from = feet.x;
-                to = leanX();
+                to = finalX(measure());
               },
               onUpdate: () => {
                 feet.x = from + (to - from) * go.d;
@@ -500,8 +485,8 @@ export default function CoverScout({ step, next, move = "push" }: SlideProps & {
             },
             "settle",
           );
-          poseTo(tl, LEAN, 0.7, "power2.inOut", "settle");
-          tl.call(() => startLife(LEAN));
+          poseTo(tl, STAND, 0.7, "power2.inOut", "settle");
+          tl.call(() => startLife(STAND));
         }
       };
 

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
 import { asset } from '@/lib/asset';
@@ -35,10 +36,14 @@ type Bones = Record<string, THREE.Bone>;
 
 const MODEL_URL = asset('/scout.glb');
 
-// The model is parsed once per page; every stage gets its own skinned clone of it.
+// The model is parsed once per page; every stage gets its own skinned clone of it. Its geometry is
+// meshopt-compressed (7.9 MB down to 1.6 MB), so the loader needs the meshopt decoder.
 let modelPromise: Promise<THREE.Object3D> | null = null;
 const loadModel = () => {
-  modelPromise ??= new GLTFLoader().loadAsync(MODEL_URL).then((g) => g.scene);
+  modelPromise ??= new GLTFLoader()
+    .setMeshoptDecoder(MeshoptDecoder)
+    .loadAsync(MODEL_URL)
+    .then((g) => g.scene);
   modelPromise.catch(() => void (modelPromise = null));
   return modelPromise;
 };

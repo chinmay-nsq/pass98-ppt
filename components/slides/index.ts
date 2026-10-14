@@ -57,7 +57,8 @@ export const SLIDES: SlideDef[] = [
       scout: {
         spot: { anchor: 'report-bars', x: 0.5 },
         size: 0.22,
-        delay: 1.8,
+        startAtStep: 1,
+        delay: 0.2,
         steps: [
           { run: { from: 1.08, to: { anchor: 'report-bars', x: 0.5 }, dur: 1.5 } },
           { face: 0 },
@@ -80,9 +81,9 @@ export const SLIDES: SlideDef[] = [
     },
     title: 'The report',
     section: 'Candidate experience',
-    steps: 1,
+    steps: 2,
     notes:
-      'Two AI passes run in parallel, scoring and coaching, and merge into one report. The numbers on screen are a sample. Press right for the focus plan: weakest skill first, one solo action to take, and a measurable target. The wording is written with no subject, so the same report reads correctly to the candidate and to a recruiter.',
+      'Two AI passes run in parallel, scoring and coaching, and merge into one report. The score lands at 64: almost there. Click: watch Scout jump on it and stomp it up to 82, interview ready. Click again for the focus plan: weakest skill first, one action to take, and a measurable target. The numbers are a sample.',
     Component: Report,
   },
   {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SlideFrame } from '@/components/ui/SlideFrame';
 import { Glass, Chip } from '@/components/ui/Glass';
@@ -36,8 +36,8 @@ export default function Report({ step }: SlideProps) {
       const nums = gsap.utils.toArray<HTMLElement>('[data-num]');
       const verdict = root.current?.querySelector<HTMLElement>('[data-verdict]');
       if (!arc || !num) return;
-      // The Scout version tells a little story: the score first lands at 64, then he jumps on it
-      // and it climbs to 82. Without him (Classic, or reduced motion) it goes straight to 82.
+      // The score first lands at 64. On the first click the Scout jumps on it and stomps it up to 82
+      // (in Classic it just climbs to 82). With reduced motion it shows 82 straight away.
       const START = 64;
       const SCORE = 82;
       const setVerdict = (v: number) => verdict && (verdict.textContent = v >= 80 ? 'Interview ready' : 'Almost there');
@@ -49,8 +49,7 @@ export default function Report({ step }: SlideProps) {
         nums.forEach((n) => (n.textContent = n.dataset.num ?? ''));
         return;
       }
-      const withScout = readCoverVariant() !== 'classic';
-      const first = withScout ? START : SCORE;
+      const first = START;
       const state = { v: 0 };
       const show = () => {
         num.textContent = String(Math.round(state.v));
@@ -104,7 +103,6 @@ export default function Report({ step }: SlideProps) {
         if (what === 'report-stomp' && notch < NOTCHES.length) {
           stomp(NOTCHES[notch], notch + 1);
           if (++notch === NOTCHES.length) burst();
-          fallback?.kill();
         } else if (what === 'report-boost' && notch < NOTCHES.length) {
           notch = NOTCHES.length;
           gsap.killTweensOf(state);
@@ -112,9 +110,6 @@ export default function Report({ step }: SlideProps) {
         }
       };
       window.addEventListener(CAMEO_EVENT, boost);
-      // If he never arrives (the model failed to load), the score still reaches 82.
-      let fallback: gsap.core.Tween | null = null;
-      fallback = withScout ? gsap.delayedCall(12, () => boost(new CustomEvent(CAMEO_EVENT, { detail: 'report-boost' }))) : null;
       bars.forEach((b, i) => {
         gsap.fromTo(
           b,
@@ -135,11 +130,25 @@ export default function Report({ step }: SlideProps) {
       });
       return () => {
         window.removeEventListener(CAMEO_EVENT, boost);
-        fallback?.kill();
       };
     },
     { scope: root },
   );
+
+  // The first click starts the boost: the Scout's routine (it waits for this step), or, in Classic,
+  // the score simply climbs. If he never arrives (the model failed to load), it still reaches 82.
+  const boosted = useRef(false);
+  useEffect(() => {
+    if (step < 1 || boosted.current) return;
+    boosted.current = true;
+    const fire = () => window.dispatchEvent(new CustomEvent(CAMEO_EVENT, { detail: 'report-boost' }));
+    if (readCoverVariant() === 'classic') {
+      fire();
+      return;
+    }
+    const t = window.setTimeout(fire, 12000);
+    return () => window.clearTimeout(t);
+  }, [step]);
 
   return (
     <SlideFrame
@@ -222,7 +231,7 @@ export default function Report({ step }: SlideProps) {
           {/* Strengths, then (on the next build) the focus plan */}
           <div data-in="up" className="min-h-[9.5rem]">
             <AnimatePresence mode="wait">
-              {step === 0 ? (
+              {step < 2 ? (
                 <motion.div
                   key="chips"
                   initial={{ opacity: 0, y: 14 }}
@@ -241,7 +250,7 @@ export default function Report({ step }: SlideProps) {
                     <Chip>Q&amp;A breakdown</Chip>
                     <Chip>Trajectory chart</Chip>
                   </div>
-                  <p className="mono text-[0.7rem] tracking-widest text-faint">PRESS → TO SEE THE FOCUS PLAN</p>
+                  {step === 1 && <p className="mono text-[0.7rem] tracking-widest text-faint">PRESS → TO SEE THE FOCUS PLAN</p>}
                 </motion.div>
               ) : (
                 <motion.div

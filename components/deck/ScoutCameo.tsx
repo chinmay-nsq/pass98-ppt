@@ -47,6 +47,8 @@ export interface CameoConfig {
   size: number;
   /** Seconds to stay hidden after the slide arrives, so it settles before he enters. */
   delay?: number;
+  /** Stay hidden until the slide reaches this build step (a click), then start. */
+  startAtStep?: number;
   /** Starting direction (radians); defaults to facing the audience. */
   facing?: number;
   /** The routine; the last step should normally be a `loop` without a duration. */
@@ -64,11 +66,14 @@ const MODEL_H = 1.9; // model units from feet to the top of the crest
  * model's own animation page): the pose eases toward each step's target every frame, exactly as the
  * original page does, and the canvas is moved for runs and hops.
  */
-export default function ScoutCameo({ config }: { config: CameoConfig }) {
+export default function ScoutCameo({ config, step = 0 }: { config: CameoConfig; step?: number }) {
   const pose = useRef<Pose>(P({ rootRot: config.facing ?? 0 })).current;
   const box = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<{ w: number; h: number; ppu: number } | null>(null);
   const [ready, setReady] = useState(false);
+  // Once the slide reaches `startAtStep` he starts, and stays started even if the step goes back.
+  const started = useRef(false);
+  if (step >= (config.startAtStep ?? 0)) started.current = true;
 
   // Size from the viewport once on mount.
   useEffect(() => {
@@ -129,11 +134,12 @@ export default function ScoutCameo({ config }: { config: CameoConfig }) {
       }
     };
     next();
-    if (!config.delay) place();
+    if (!config.delay && !config.startAtStep) place();
 
     let waitIn = config.delay ?? 0;
     const tick = () => {
       const dt = Math.min(0.05, gsap.ticker.deltaRatio() / 60);
+      if (!started.current) return;
       if (waitIn > 0) {
         waitIn -= dt;
         return;

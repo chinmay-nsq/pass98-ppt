@@ -209,7 +209,7 @@ export function Deck() {
 
       {/* Orange Scout cameos, only in the Scout version of the deck. */}
       <AnimatePresence>
-        {ready && !calm && variant !== 'classic' && slide.stage?.scout && <ScoutCameo key={slide.id} config={slide.stage.scout} />}
+        {ready && !calm && variant !== 'classic' && slide.stage?.scout && <ScoutCameo key={slide.id} config={slide.stage.scout} step={step} />}
       </AnimatePresence>
 
       <div className="grain pointer-events-none absolute inset-0" />
